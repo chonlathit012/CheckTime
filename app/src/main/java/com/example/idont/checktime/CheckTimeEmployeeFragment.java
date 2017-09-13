@@ -177,7 +177,6 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
             String[] string = item.split(",");
             String bssid_string = string[1];
             String bssid = bssid_string.split(": ")[1];
-
             if (bssid.equals(wifi)) {
                 Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
                 break;
