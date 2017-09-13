@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">checkTime</string>
+
+    <string name="url">http://172.20.10.3/project/main.php</string>
+    <!--<string name="url">http://192.168.1.210/project/main.php</string>-->
+
+    <string name="hint_email">Email</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_repassword">Re-password</string>
+    <string name="hint_displayname">Display name</string>
+    <string name="hint_firstname">Firtsname</string>
+    <string name="hint_lastname">Lastsname</string>
+    <string name="hint_birthday">Birthday</string>
+    <string name="hint_phonenumber">Phonenumber</string>
+
+    <string name="btn_save">Save</string>
+    <string name="btn_cancel">Cancel</string>
+    <string name="btn_logout">Logout</string>
+    <string name="btn_signup">Sign Up</string>
+    <string name="btn_signin">Sign In</string>
+
+    <string name="txt_email">Email</string>
+    <string name="txt_displayname">Dispalyname</string>
+    <string name="txt_edit">Edit</string>
+    <string name="txt_profile">My Profile</string>
+    <string name="txt_signup">Sign Up</string>
+    <string name="txt_signin">Sign In</string>
+    <string name="txt_forgotpassword">Forgot password ?</string>
+    <string name="txt_already_signup">Don\'t have an account?</string>
+    <string name="txt_back">Back</string>
+    <string name="txt_birthday">Birthday </string>
+    <string name="txt_start_time">Start time </string>
+    <string name="txt_finish_time">Finish time </string>
+    <string name="txt_select_date">Select Date</string>
+    <string name="txt_select_time">Select Time</string>
+    <string name="txt_select_photo">Select Photo</string>
+    <string name="txt_load">CheckTime</string>
+
+    <string name="err_msg_email">Enter valid email address</string>
+    <string name="err_msg_password">Enter the password</string>
+    <string name="err_msg_firstname">Enter the firstname</string>
+    <string name="err_msg_lastname">Enter the lastname</string>
+    <string name="err_msg_phone_number">Enter the phonenumber</string>
+    <string name="err_msg_passwordless">Password must be 6 or more</string>
+    <string name="err_msg_repassword">Password not same</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">No Company</string>
+</resources>

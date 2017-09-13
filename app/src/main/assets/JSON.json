@@ -1,0 +1,50 @@
+{
+  "status": 200,
+  "message": "success",
+  "data": {
+    "company_list": [
+      {
+        "company_id": "1",
+        "company_name": "ar",
+        "start_time": "8:30",
+        "finish_time": "17:30",
+        "logo_url": null
+      },
+      {
+        "company_id": "2",
+        "company_name": "true",
+        "start_time": "9:00",
+        "finish_time": "18:00",
+        "logo_url": null
+      },
+      {
+        "company_id": "3",
+        "company_name": "AIS",
+        "start_time": "8:30",
+        "finish_time": "17:30",
+        "logo_url": null
+      },
+      {
+        "company_id": "4",
+        "company_name": "CP",
+        "start_time": "9:30",
+        "finish_time": "18:30",
+        "logo_url": null
+      },
+      {
+        "company_id": "11",
+        "company_name": "toyota",
+        "start_time": "9:00",
+        "finish_time": "18:00",
+        "logo_url": null
+      },
+      {
+        "company_id": "12",
+        "company_name": "thai software",
+        "start_time": "7:30",
+        "finish_time": "16:30",
+        "logo_url": null
+      }
+    ]
+  }
+}

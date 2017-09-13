@@ -1,0 +1,33 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.idont.checktime.CheckTimeEmployeeFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <DigitalClock
+        android:id="@+id/textClock"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="68dp"
+        android:format24Hour="hh:mm:ss"
+        android:gravity="center_horizontal"
+        android:padding="30dp"
+        android:textSize="55sp"
+        android:textStyle="bold" />
+
+
+    <Button
+        android:id="@+id/buttonCheckTime"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/textClock"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="192dp"
+        android:textColor="#ffffff" />
+
+
+</RelativeLayout>

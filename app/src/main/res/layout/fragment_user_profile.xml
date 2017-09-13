@@ -1,0 +1,94 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="20dp"
+    tools:context="com.example.idont.checktime.UserProfileFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            app:srcCompat="@drawable/profile"
+            android:layout_gravity="center_horizontal"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="10dp">
+
+            <TextView
+                android:id="@+id/textViewFirstname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="Firstname :"
+                android:textSize="18sp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="10dp" />
+
+            <TextView
+                android:id="@+id/textViewLastname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewFirstname"
+                android:layout_below="@+id/textViewFirstname"
+                android:padding="5dp"
+                android:text="Lastname :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewLastname"
+                android:layout_below="@+id/textViewLastname"
+                android:padding="5dp"
+                android:text="Email :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewAge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewEmail"
+                android:layout_below="@+id/textViewEmail"
+                android:padding="5dp"
+                android:text="Age :"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textViewPhonenumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@+id/textViewAge"
+                android:layout_below="@+id/textViewAge"
+                android:padding="5dp"
+                android:text="Phonenumber :"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/buttonSignOut"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/textViewPhonenumber"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="35dp"
+                android:background="#ed4242"
+                android:text="Sign Out"
+                android:textColor="#ffffff" />
+        </RelativeLayout>
+
+    </LinearLayout>
+</RelativeLayout>

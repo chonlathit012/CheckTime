@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "23949256251",
+    "firebase_url": "https://profect-93231.firebaseio.com",
+    "project_id": "profect-93231",
+    "storage_bucket": "profect-93231.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23949256251:android:b5b44b87ead80bb2",
+        "android_client_info": {
+          "package_name": "com.example.idont.firebasetest2"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23949256251-h7kqge7kved0ustgma3m7v7el9draosb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcnY_GCKr3Kfo11BHrdjYN-aQyoqulQAE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:23949256251:android:e0388ca07c54d2f5",
+        "android_client_info": {
+          "package_name": "com.example.idont.checktime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "23949256251-h7kqge7kved0ustgma3m7v7el9draosb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcnY_GCKr3Kfo11BHrdjYN-aQyoqulQAE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,124 @@
+package com.example.idont.checktime;
+
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+public class MainEmployeeActivity extends AppCompatActivity {
+
+    FirebaseAuth firebaseAuth;
+    FirebaseUser firebaseUser;
+
+    Menu menutest;
+
+    Toolbar toolbar;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_employee);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        firebaseUser = firebaseAuth.getCurrentUser();
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar_user);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Chart");
+
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
+        BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+                Fragment selectedFragment = null;
+                switch (item.getItemId()) {
+                    case R.id.chart:
+                        selectedFragment = ChartEmployeeFragment.newInstance();
+                        getSupportActionBar().setTitle("Chart");
+                        menutest.clear();
+                        break;
+                    case R.id.time:
+                        selectedFragment = CheckTimeEmployeeFragment.newInstance();
+                        getSupportActionBar().setTitle("Time");
+                        menutest.clear();
+                        break;
+                    case R.id.calendar:
+                        selectedFragment = CalendarEmplouyeeFragment.newInstance();
+                        getSupportActionBar().setTitle("Calendar");
+                        menutest.clear();
+                        break;
+                    case R.id.setting:
+                        selectedFragment = SettingEmployeeFragment.newInstance();
+                        getSupportActionBar().setTitle("Setting");
+                        menutest.clear();
+                        getMenuInflater().inflate(R.menu.toolbar_setting_employee, menutest);
+                        break;
+                }
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.frame_layout, selectedFragment);
+                transaction.commit();
+                return true;
+            }
+        });
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.frame_layout, ChartEmployeeFragment.newInstance());
+        transaction.commit();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menutest = menu;
+        menu.clear();
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.edit_profile) {
+            startActivity(new Intent(MainEmployeeActivity.this, EditUserProfileActivity.class));
+        }
+
+        if (id == R.id.signout) {
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(MainEmployeeActivity.this);
+            builder.setMessage("Are you sure you want to sign out?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    ProgressDialog progressDialog = new ProgressDialog(MainEmployeeActivity.this);
+                    progressDialog.setMessage("Sign out..");
+                    progressDialog.show();
+                    firebaseAuth.signOut();
+                    progressDialog.dismiss();
+                    startActivity(new Intent(MainEmployeeActivity.this, LoginActivity.class));
+                    finish();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.show();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
