@@ -5,7 +5,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.example.idont.checktime"
-        minSdkVersion 24
+        minSdkVersion 19
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -30,6 +30,7 @@ dependencies {
     compile 'com.google.firebase:firebase-auth:11.0.2'
     compile 'com.android.support:design:25.3.1'
     compile 'com.google.code.gson:gson:2.7'
+    compile 'com.google.android.gms:play-services-ads:11.0.2'
     compile 'org.apache.httpcomponents:httpcore:4.4.1'
     compile 'org.apache.httpcomponents:httpclient:4.5'
     compile 'com.android.support:support-v4:25.3.1'

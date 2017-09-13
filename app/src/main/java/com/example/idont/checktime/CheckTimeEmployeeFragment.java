@@ -1,14 +1,14 @@
 package com.example.idont.checktime;
 
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +29,6 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
-    Context context = null;
-
     Button buttonCheckTime;
 
     String json = "";
@@ -39,6 +37,7 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
     String message;
     String start_time;
     String finish_time;
+    String wifi = "58:8d:09:e2:a5:81";
 
     int state = 0;
 
@@ -106,7 +105,7 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
             }
         });
 
-        detectWifi();
+//        detectWifi();
         getStateButton();
     }
 
@@ -163,28 +162,26 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
         }
     }
 
-    public void detectWifi(){
-        this.wifiManager = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
-        this.wifiManager.startScan();
-        this.wifiList = this.wifiManager.getScanResults();
+    public void detectWifi() {
 
-        Log.d("TAG", wifiList.toString());
+        if (ContextCompat.checkSelfPermission(getActivity(), android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(getActivity(), "Permission failed.", Toast.LENGTH_SHORT).show();
+        }
 
-        this.data = new Data[wifiList.size()];
+        wifiManager = (WifiManager) getActivity().getSystemService(Context.WIFI_SERVICE);
+        wifiManager.startScan();
+        wifiList = wifiManager.getScanResults();
 
-        for (int i = 0; i<wifiList.size(); i++){
+        for (int i = 0; i < wifiList.size(); i++) {
             String item = wifiList.get(i).toString();
-            String[] vector_item = item.split(",");
-            String item_essid = vector_item[0];
-            String item_bssid = vector_item[1];
-            String item_capabilities = vector_item[2];
-            String item_level = vector_item[3];
+            String[] string = item.split(",");
+            String bssid_string = string[1];
+            String bssid = bssid_string.split(": ")[1];
 
-            String ssid = item_essid.split(": ")[1];
-            String bssid = item_bssid.split(": ")[1];
-            String security = item_capabilities.split(": ")[1];
-            String level = item_level.split(":")[1];
-            data[i] = new Data(ssid, bssid, security, level);
+            if (bssid.equals(wifi)) {
+                Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
+                break;
+            }
         }
     }
 

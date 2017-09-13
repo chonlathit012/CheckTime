@@ -1,11 +1,13 @@
 package com.example.idont.checktime;
 
+import android.*;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -37,6 +39,9 @@ public class MainEmployeeActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Chart");
+
+        ActivityCompat.requestPermissions(MainEmployeeActivity.this, new String[]
+                {android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
 
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation_bar);
         BottomNavigationViewHelper.disableShiftMode(bottomNavigationView);
