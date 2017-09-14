@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.google.gson.Gson;
 
 import java.util.Calendar;
 import java.util.List;
+
+import static android.R.attr.filter;
 
 
 /**
@@ -36,17 +39,12 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
     String jsonReceive = "";
     String uid;
     String company_id;
-
-    TextView textViewFirstname;
-    TextView textViewLastname;
-    TextView textViewEmail;
-    TextView textViewAge;
-    TextView textViewPhonenumber;
     String empolyee_id;
 
     ListView listView;
     TextView textViewNoEmployee;
     ImageView imageView;
+    SearchView searchView;
 
     EmployeeListManagerCustomAdapter employeeListManagerCustomAdapter;
 
@@ -73,6 +71,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
         listView = (ListView) view.findViewById(R.id.listView);
         textViewNoEmployee = (TextView) view.findViewById(R.id.textViewNoEmployee);
         imageView = (ImageView) view.findViewById(R.id.imageView);
+        searchView =(SearchView) view.findViewById(R.id.searchView);
 
         getCompanyId();
 
@@ -93,7 +92,26 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
                 Intent intent = new Intent(getActivity(),EmployeeProfileActivity.class);
                 intent.putExtra("employee_id",empolyee_id);
                 startActivity(intent);
+            }
+        });
 
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                searchView.setIconified(false);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                employeeListManagerCustomAdapter.filter(newText);
+                return false;
             }
         });
 

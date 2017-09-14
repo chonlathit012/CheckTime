@@ -9,7 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by iDont on 8/9/2560.
@@ -20,10 +22,14 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
     private ViewHolder viewHolder;
     private List<EmployeeListManagerDataReceive> employeeListManagerDataReceives;
 
+    ArrayList<EmployeeListManagerDataReceive> arraylist;
+
     public EmployeeListManagerCustomAdapter(Activity activity, List<EmployeeListManagerDataReceive> employeeListManagerDataReceives) {
         layoutInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         this.employeeListManagerDataReceives = employeeListManagerDataReceives;
+        arraylist = new ArrayList<EmployeeListManagerDataReceive>();
+        arraylist.addAll(employeeListManagerDataReceives);
     }
 
     private static class ViewHolder {
@@ -65,6 +71,24 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
         viewHolder.display_name.setText(employeeListManagerDataReceive.getDisplay_name());
 
         return convertView;
+    }
+
+    public void filter(String charText) {
+
+        charText = charText.toLowerCase(Locale.getDefault());
+
+        employeeListManagerDataReceives.clear();
+        if (charText.length() == 0) {
+            employeeListManagerDataReceives.addAll(arraylist);
+
+        } else {
+            for (EmployeeListManagerDataReceive postDetail : arraylist) {
+                if (charText.length() != 0 && postDetail.getDisplay_name().toLowerCase(Locale.getDefault()).contains(charText)) {
+                    employeeListManagerDataReceives.add(postDetail);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
 }
