@@ -58,7 +58,7 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
 
         myCalendar = (MyDynamicCalendar) view.findViewById(R.id.myCalendar);
 
-//        myCalendar.showMonthView();
+        myCalendar.showMonthView();
 
         myCalendar.setCalendarBackgroundColor("#fafafa");
 

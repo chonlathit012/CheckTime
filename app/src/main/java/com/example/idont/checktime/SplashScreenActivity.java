@@ -7,21 +7,32 @@ import android.os.Bundle;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
+    Handler handler;
+    Runnable runnable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        int SPLASH_DISPLAY_LENGTH = 3000;
+        handler = new Handler();
 
-        new Handler().postDelayed(new Runnable(){
-            @Override
+        runnable = new Runnable() {
             public void run() {
                 Intent mainIntent = new Intent(SplashScreenActivity.this,LoginActivity.class);
                 startActivity(mainIntent);
                 finish();
             }
-        }, SPLASH_DISPLAY_LENGTH);
+        };
+    }
 
+    public void onResume() {
+        super.onResume();
+        handler.postDelayed(runnable, 3000);
+    }
+
+    public void onStop() {
+        super.onStop();
+        handler.removeCallbacks(runnable);
     }
 }

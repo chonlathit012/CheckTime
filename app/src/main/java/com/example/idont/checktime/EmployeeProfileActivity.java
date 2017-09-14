@@ -1,8 +1,11 @@
 package com.example.idont.checktime;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -22,6 +25,9 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
     TextView textViewEmail;
     TextView textViewAge;
     TextView textViewPhonenumber;
+
+    Button buttonShowCalendar;
+
     ImageView imageView;
 
     String json = "";
@@ -38,6 +44,8 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
         textViewLastname = (TextView) findViewById(R.id.textViewLastname);
         textViewAge = (TextView) findViewById(R.id.textViewAge);
         textViewPhonenumber = (TextView) findViewById(R.id.textViewPhonenumber);
+
+        buttonShowCalendar = (Button) findViewById(R.id.buttonShowCalendar);
         imageView = (ImageView) findViewById(R.id.imageView);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_edit_user);
@@ -46,11 +54,19 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
 
         Bundle bundle = getIntent().getExtras();
         if (bundle != null) {
-            employee_id = bundle.getString("employee_id");;
+            employee_id = bundle.getString("employee_id");
         }
 
         getUserData();
 
+        buttonShowCalendar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(EmployeeProfileActivity.this,CalendarActivity.class);
+                intent.putExtra("employee_id",employee_id);
+                startActivity(intent);
+            }
+        });
 
     }
 
