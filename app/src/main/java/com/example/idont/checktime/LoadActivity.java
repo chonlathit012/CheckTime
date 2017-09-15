@@ -1,9 +1,13 @@
 package com.example.idont.checktime;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -33,6 +37,8 @@ public class LoadActivity extends AppCompatActivity implements Test{
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
+    CoordinatorLayout coordinatorLayout;
+
     String jsonReceive = "";
     String json = "";
     String uid;
@@ -43,6 +49,9 @@ public class LoadActivity extends AppCompatActivity implements Test{
         setContentView(R.layout.activity_load);
 
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
@@ -101,7 +110,18 @@ public class LoadActivity extends AppCompatActivity implements Test{
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
-        showData();
+        if (s.equals("No connection.")){
+            Snackbar snackbar = Snackbar
+                    .make(coordinatorLayout,s, Snackbar.LENGTH_INDEFINITE).setAction("close", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                }
+            }).setActionTextColor(Color.rgb(129,186,219));
+            snackbar.show();
+        } else {
+            jsonReceive = s;
+            showData();
+        }
     }
 }

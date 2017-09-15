@@ -5,10 +5,15 @@
     android:padding="5dp"
     tools:context="com.example.idont.checktime.ChartEmployeeFragment">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="230dp"
+        android:layout_height="230dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_time_700"
         android:id="@+id/textView0700"
         android:layout_marginBottom="46dp"
         android:layout_alignBottom="@+id/horizontalScrollView"
@@ -17,7 +22,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_time_1030"
         android:id="@+id/textView1030"
         android:layout_alignTop="@+id/horizontalScrollView"
         android:layout_alignParentStart="true" />
@@ -25,7 +29,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/txt_basetime"
         android:id="@+id/textView0830"
         android:layout_above="@+id/view0830"
         android:layout_alignParentStart="true" />
@@ -33,7 +36,6 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#e2e2e2"
         android:layout_centerVertical="true"
         android:padding="10dp"
         android:id="@+id/view0830" />

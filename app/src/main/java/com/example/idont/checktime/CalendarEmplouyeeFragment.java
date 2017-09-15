@@ -129,7 +129,7 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
                             if (dateLocal.equals(newDate)) {
                                 builder.setMessage(("Date : " + newDate) +
                                         "\nStart time : " + startTime +
-                                        "\nFinish time : null ");
+                                        "\nFinish time : - ");
                                 builder.setPositiveButton("Done", null);
                                 builder.show();
                             }

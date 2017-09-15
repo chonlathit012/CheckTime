@@ -80,7 +80,8 @@ public class HttpTask extends AsyncTask<String, Void, String> {
             }
 
         } catch (Exception e) {
-            return null;
+            result = "No connection.";
+            return result;
         } finally {
             con.disconnect();
         }
