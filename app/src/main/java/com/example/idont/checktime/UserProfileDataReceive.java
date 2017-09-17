@@ -5,11 +5,20 @@ package com.example.idont.checktime;
  */
 
 public class UserProfileDataReceive {
+    String id;
     String first_name;
     String last_name;
     String email;
     String birthday;
     String phone_number;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getEmail() {
         return email;

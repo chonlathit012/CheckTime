@@ -42,47 +42,43 @@
         android:layout_marginRight="10dp" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/day_color"
         android:layout_width="20dp"
         android:layout_height="20dp"
         android:layout_alignTop="@+id/pie_view"
         android:layout_marginTop="72dp"
         android:layout_toEndOf="@+id/pie_view"
-        android:background="#aa66cd"
         android:textSize="20sp" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/total_color"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_alignStart="@+id/textView3"
-        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/day_color"
+        android:layout_below="@+id/day_color"
         android:layout_marginTop="12dp"
-        android:background="#33b5e6"
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/day"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView3"
-        android:layout_alignBottom="@+id/textView3"
-        android:layout_toEndOf="@+id/textView3"
+        android:layout_alignBaseline="@+id/day_color"
+        android:layout_alignBottom="@+id/day_color"
+        android:layout_toEndOf="@+id/day_color"
         android:gravity="center"
         android:paddingLeft="5dp"
-        android:text="Absent : "
         android:textSize="20sp" />
 
     <TextView
         android:id="@+id/total"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView2"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toEndOf="@+id/textView2"
+        android:layout_alignBaseline="@+id/total_color"
+        android:layout_alignBottom="@+id/total_color"
+        android:layout_toEndOf="@+id/total_color"
         android:gravity="center"
         android:paddingLeft="5dp"
-        android:text="Present : "
         android:textSize="20sp" />
 
 </RelativeLayout>

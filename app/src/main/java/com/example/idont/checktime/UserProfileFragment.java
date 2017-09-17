@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -45,13 +50,11 @@ public class UserProfileFragment extends Fragment implements Test {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    StorageReference storageReference;
+
     String uid;
     String json = "";
     String jsonReceive = "";
-
-    Uri photoUrl;
-
-    int server = 0;
 
     TextView textViewFirstname;
     TextView textViewLastname;
@@ -83,6 +86,7 @@ public class UserProfileFragment extends Fragment implements Test {
         textViewPhonenumber = (TextView) view.findViewById(R.id.textViewPhonenumber);
         imageView = (ImageView) view.findViewById(R.id.imageView);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         uid = firebaseUser.getUid();
@@ -118,22 +122,6 @@ public class UserProfileFragment extends Fragment implements Test {
             }
         });
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                photoUrl = profile.getPhotoUrl();
-            }
-            ;
-        }
-
-        if (photoUrl != null) {
-            Glide.with(getActivity())
-//                .load(new File(photoUrl.getPath()))
-//                .load("http://placehold.it/96x96")
-                    .load(photoUrl.toString())
-                    .into(imageView);
-        }
     }
 
     public void showUserData() {
@@ -162,6 +150,22 @@ public class UserProfileFragment extends Fragment implements Test {
             String bi = birthday.substring(6);
             yearUser = Integer.parseInt(bi);
         }
+
+        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(getActivity())
+                        .load(uri)
+                        .into(imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         textViewFirstname.setText("Firstname : " + firstname);
         textViewLastname.setText("Lastname : " + lastname);

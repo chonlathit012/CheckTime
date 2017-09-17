@@ -1,6 +1,8 @@
 package com.example.idont.checktime;
 
 import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -10,8 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import java.util.Calendar;
@@ -19,6 +26,8 @@ import java.util.Calendar;
 public class EmployeeProfileActivity extends AppCompatActivity implements Test{
 
     Toolbar toolbar;
+
+    StorageReference storageReference;
 
     TextView textViewFirstname;
     TextView textViewLastname;
@@ -38,6 +47,8 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_employee_profile);
+
+        storageReference = FirebaseStorage.getInstance().getReference();
 
         textViewEmail = (TextView) findViewById(R.id.textViewEmail);
         textViewFirstname = (TextView) findViewById(R.id.textViewFirstname);
@@ -75,6 +86,7 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
         Gson gson = new Gson();
         UserProfileReceive userProfileReceive = gson.fromJson(jsonReceive, UserProfileReceive.class);
 
+        String uid = userProfileReceive.getData().getId();
         String email = userProfileReceive.getData().getEmail();
         String firstname = userProfileReceive.getData().getFirst_name();
         String lastname = userProfileReceive.getData().getLast_name();
@@ -96,6 +108,22 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
             String bi = birthday.substring(6);
             yearUser = Integer.parseInt(bi);
         }
+
+        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(EmployeeProfileActivity.this)
+                        .load(uri)
+                        .into(imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         textViewFirstname.setText("Firstname : " + firstname);
         textViewLastname.setText("Lastname : " + lastname);

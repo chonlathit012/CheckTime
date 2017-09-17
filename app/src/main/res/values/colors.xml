@@ -3,6 +3,9 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#3F51B5</color>
+    
+    <color name="color_day">#aa66cd</color>
+    <color name="color_total">#33b5e6</color>
 
     <color name="btn_blue_color">#3F51B5</color>
     <color name="btn_green_color">#99cc00</color>

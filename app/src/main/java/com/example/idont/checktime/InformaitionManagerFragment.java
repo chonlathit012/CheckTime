@@ -26,7 +26,9 @@ public class InformaitionManagerFragment extends Fragment implements Test {
     FirebaseUser firebaseUser;
 
     TextView textViewDay;
+    TextView textViewDayColor;
     TextView textViewTotal;
+    TextView textViewTotalColor;
 
     ListView listView;
     PieView pieView;
@@ -66,7 +68,9 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         listView = (ListView) view.findViewById(R.id.listView);
 
         textViewDay = (TextView) view.findViewById(R.id.day);
+        textViewDayColor = (TextView) view.findViewById(R.id.day_color);
         textViewTotal = (TextView) view.findViewById(R.id.total);
+        textViewTotalColor = (TextView) view.findViewById(R.id.total_color);
 
         getCompanyId();
 //        randomSet(pieView);
@@ -84,24 +88,28 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
         ArrayList<Integer> intList = new ArrayList<Integer>();
 
-        totalem = Integer.parseInt(total_count);
-        late = Integer.parseInt(day_count);
-        intList.add(0, late);
-        intList.add(1, totalem - late);
+        if (day_count != null) {
+            totalem = Integer.parseInt(total_count);
+            late = Integer.parseInt(day_count);
+            intList.add(0, late);
+            intList.add(1, totalem - late);
 
-        for (int i = 0; i < totalNum; i++) {
-            pieHelperArrayList.add(new PieHelper(100f * intList.get(i) / totalem));
+            for (int i = 0; i < totalNum; i++) {
+                pieHelperArrayList.add(new PieHelper(100f * intList.get(i) / totalem));
+            }
+
+            textViewDay.setText("Absent : " + String.valueOf(totalem - late));
+            textViewDayColor.setBackgroundResource(R.color.color_day);
+            textViewTotal.setText("Present : " + String.valueOf(late));
+            textViewTotalColor.setBackgroundResource(R.color.color_total);
+
+            pieView.selectedPie(PieView.NO_SELECTED_INDEX);
+            pieView.showPercentLabel(true);
+            pieView.setDate(pieHelperArrayList);
+
+            informationManagerCustomAdapter = new InformationManagerCustomAdapter(getActivity(),listDataReceives);
+            listView.setAdapter(informationManagerCustomAdapter);
         }
-
-        textViewDay.setText("Absent : " + String.valueOf(totalem - late));
-        textViewTotal.setText("Present : " + String.valueOf(late));
-
-        pieView.selectedPie(PieView.NO_SELECTED_INDEX);
-        pieView.showPercentLabel(true);
-        pieView.setDate(pieHelperArrayList);
-
-        informationManagerCustomAdapter = new InformationManagerCustomAdapter(getActivity(),listDataReceives);
-        listView.setAdapter(informationManagerCustomAdapter);
 
     }
 

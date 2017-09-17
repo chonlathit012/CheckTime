@@ -37,12 +37,17 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
 import org.apache.http.NameValuePair;
@@ -66,14 +71,14 @@ import java.util.List;
 
 public class EditUserProfileActivity extends AppCompatActivity implements Test {
 
-    public static final int GET_FROM_GALLERY = 3;
-    public Context context = EditUserProfileActivity.this;
+    private static final int GALLERY_INTENT = 2;
 
     Toolbar toolbar;
     ProgressDialog progressDialog;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+    StorageReference storageReference;
 
     Calendar calendar;
     int year, month, day;
@@ -81,7 +86,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
     ImageView imageView;
     ImageView imageView2;
     Uri selectedImage;
-    Uri photoUrl;
     Bitmap bitmap = null;
 
     CoordinatorLayout coordinatorLayout;
@@ -99,7 +103,6 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
     String json = "";
     String jsonReceive = "";
     String uid = null;
-    String role_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +111,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
 
         progressDialog = new ProgressDialog(this);
 
+        storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         uid = firebaseUser.getUid();
@@ -143,8 +147,9 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         buttonSelectPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivityForResult(new Intent(Intent.ACTION_PICK,
-                        android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI), GET_FROM_GALLERY);
+                Intent intent = new Intent(Intent.ACTION_PICK);
+                intent.setType("image/*");
+                startActivityForResult(intent, GALLERY_INTENT);
             }
         });
 
@@ -175,60 +180,35 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
 
     }
 
-//    public void getRoleData() {
-//        Gson gson = new Gson();
-//        CheckRoleData checkRoleData = new CheckRoleData();
-//        checkRoleData.setId(uid);
-//
-//        CheckRoleSend checkRoleSend = new CheckRoleSend();
-//        checkRoleSend.setTarget("check_employee_role");
-//        checkRoleSend.setData(checkRoleData);
-//
-//        json = gson.toJson(checkRoleSend);
-//
-//        new HttpTask(EditUserProfileActivity.this).execute(json);
-//
-//    }
-//
-//    public void showRoleData() {
-//
-//        Gson gson = new Gson();
-//        CheckRoleReceive checkRoleReceive = gson.fromJson(jsonReceive, CheckRoleReceive.class);
-//
-//        role_id = checkRoleReceive.getData().getRole_id();
-//
-//
-//    }
-
     public void editProfile() {
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (selectedImage != null) {
 
-        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                .setPhotoUri(Uri.parse("http://placehold.it/96x96"))
-//                .setPhotoUri(Uri.parse(String.valueOf(bitmap)))
-                .build();
+            progressDialog.setMessage("Uploading....");
+            progressDialog.show();
 
-        progressDialog.setMessage("Please wait...");
-        progressDialog.show();
+            StorageReference imageRef = storageReference.child("userProfile/" + uid); // id of user
 
-        user.updateProfile(profileUpdates)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(Task<Void> task) {
-//                        getRoleData();
-                        if (task.isSuccessful()) {
-//                            Intent intent = new Intent(EditUserProfileActivity.this,MainUserActivity.class);
-//                            startActivity(intent);
-                            Toast.makeText(context, "User profile updated.", Toast.LENGTH_SHORT).show();
-                            finish();
-                            gson();
-                        } else {
-                            Toast.makeText(context, "Profile update failed.", Toast.LENGTH_SHORT).show();
-                        }
-                        progressDialog.dismiss();
-                    }
-                });
+            imageRef.putFile(selectedImage).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditUserProfileActivity.this, "Profile update failed.", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    progressDialog.dismiss();
+                    Toast.makeText(EditUserProfileActivity.this, "User profile updated.", Toast.LENGTH_SHORT).show();
+                    finish();
+                    gson();
+                }
+            });
+        } else {
+            gson();
+            Toast.makeText(EditUserProfileActivity.this, "User profile updated.", Toast.LENGTH_SHORT).show();
+            finish();
+        }
     }
 
     public void gson() {
@@ -259,22 +239,21 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         String birthday = userProfileReceive.getData().getBirthday();
         String phonenumber = userProfileReceive.getData().getPhone_number();
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
-                photoUrl = profile.getPhotoUrl();
-            }
-            ;
-        }
+        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
 
-        if (photoUrl != null){
-            Glide.with(context)
-//                .load(new File(photoUrl.getPath()))
-//                .load("http://placehold.it/96x96")
-                    .load(photoUrl.toString())
-                    .into(imageView);
-        }
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(EditUserProfileActivity.this)
+                        .load(uri)
+                        .into(imageView);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         editTextFirstname.setText(firstname);
         editTextLastname.setText(lastname);
@@ -348,20 +327,17 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         super.onActivityResult(requestCode, resultCode, data);
 
         //Detects request codes
-        if (requestCode == GET_FROM_GALLERY && resultCode == Activity.RESULT_OK) {
+        if (requestCode == GALLERY_INTENT && resultCode == Activity.RESULT_OK) {
             selectedImage = data.getData();
             bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
-            } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        imageView2.setImageBitmap(bitmap);
+        imageView.setImageBitmap(bitmap);
 
     }
 }

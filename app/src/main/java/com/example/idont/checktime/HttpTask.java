@@ -48,8 +48,8 @@ public class HttpTask extends AsyncTask<String, Void, String> {
     protected String doInBackground(String... params) {
 
         try {
-            String URL = "http://172.20.10.3/project/main.php"; //hotspot
-//            String URL = "http://192.168.1.210/project/main.php"; //home wifi
+//            String URL = "http://172.20.10.3/project/main.php"; //hotspot
+            String URL = "http://192.168.1.210/project/main.php"; //home wifi
             URL url = new URL(URL);
 
             con = (HttpURLConnection) url.openConnection();

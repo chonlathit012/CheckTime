@@ -2,12 +2,20 @@ package com.example.idont.checktime;
 
 import android.app.Activity;
 import android.content.Context;
+import android.net.Uri;
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +29,9 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
     private LayoutInflater layoutInflater;
     private ViewHolder viewHolder;
     private List<EmployeeListManagerDataReceive> employeeListManagerDataReceives;
+    private Context context;
+
+    StorageReference storageReference;
 
     ArrayList<EmployeeListManagerDataReceive> arraylist;
 
@@ -30,6 +41,8 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
         this.employeeListManagerDataReceives = employeeListManagerDataReceives;
         arraylist = new ArrayList<EmployeeListManagerDataReceive>();
         arraylist.addAll(employeeListManagerDataReceives);
+        context = activity;
+        storageReference = FirebaseStorage.getInstance().getReference();
     }
 
     private static class ViewHolder {
@@ -69,6 +82,23 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
         }
 
         viewHolder.display_name.setText(employeeListManagerDataReceive.getDisplay_name());
+
+        String uid = employeeListManagerDataReceive.getId();
+        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
+
+        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                Glide.with(context)
+                        .load(uri)
+                        .into(viewHolder.profile_photo);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return convertView;
     }
