@@ -10,6 +10,7 @@ public class EditProfileData {
     private String last_name;
     private String birthday;
     private String phone_number;
+    private String photo_url;
 
     public String getLast_name() {
         return last_name;
@@ -50,5 +51,13 @@ public class EditProfileData {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
     }
 }

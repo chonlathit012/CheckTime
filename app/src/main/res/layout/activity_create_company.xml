@@ -18,11 +18,23 @@
         android:orientation="vertical"
         android:padding="20dp">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/imageView"
             android:layout_width="150dp"
             android:layout_height="150dp"
+            android:src="@drawable/company"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"/>
+
+        <Button
+            android:id="@+id/buttonSelectPhoto"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/company" />
+            android:text="@string/txt_select_photo"
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/textDisplayName"

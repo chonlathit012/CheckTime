@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,11 +24,13 @@ public class InformationManagerCustomAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ViewHolder viewHolder;
     private List<InformationListDataReceive> listDataReceives;
+    private Context context;
 
     public InformationManagerCustomAdapter(Activity activity, List<InformationListDataReceive> listDataReceives) {
         layoutInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         this.listDataReceives = listDataReceives;
+        context = activity;
     }
 
     private static class ViewHolder {
@@ -89,6 +93,13 @@ public class InformationManagerCustomAdapter extends BaseAdapter {
 
         viewHolder.display_name.setText(informationListDataReceive.getDisplay_name());
         viewHolder.time.setText("Start time : " + startTime);
+        String photo_url = informationListDataReceive.getPhoto_url();
+
+        if (photo_url != null) {
+            Glide.with(context)
+                    .load(photo_url)
+                    .into(viewHolder.profile_photo);
+        }
 
         return convertView;
     }

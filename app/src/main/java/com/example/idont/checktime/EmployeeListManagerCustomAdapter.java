@@ -25,7 +25,7 @@ import java.util.Locale;
  * Created by iDont on 8/9/2560.
  */
 
-public class EmployeeListManagerCustomAdapter extends BaseAdapter{
+public class EmployeeListManagerCustomAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ViewHolder viewHolder;
     private List<EmployeeListManagerDataReceive> employeeListManagerDataReceives;
@@ -71,7 +71,7 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(R.layout.list_employee, parent, false);
-                viewHolder = new ViewHolder();
+            viewHolder = new ViewHolder();
 
             viewHolder.profile_photo = (ImageView) convertView.findViewById(R.id.profile_photo);
             viewHolder.display_name = (TextView) convertView.findViewById(R.id.display_name);
@@ -82,23 +82,14 @@ public class EmployeeListManagerCustomAdapter extends BaseAdapter{
         }
 
         viewHolder.display_name.setText(employeeListManagerDataReceive.getDisplay_name());
-
+        String photo_url = employeeListManagerDataReceive.getPhoto_url();
         String uid = employeeListManagerDataReceive.getId();
-        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
 
-        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(context)
-                        .load(uri)
-                        .into(viewHolder.profile_photo);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (photo_url != null) {
+            Glide.with(context)
+                    .load(photo_url)
+                    .into(viewHolder.profile_photo);
+        }
 
         return convertView;
     }

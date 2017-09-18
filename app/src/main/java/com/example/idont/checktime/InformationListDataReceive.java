@@ -8,6 +8,7 @@ public class InformationListDataReceive {
     private String id;
     private String display_name;
     private String start_time;
+    private String photo_url;
 
     public String getId() {
         return id;
@@ -31,5 +32,13 @@ public class InformationListDataReceive {
 
     public void setStart_time(String start_time) {
         this.start_time = start_time;
+    }
+
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
     }
 }

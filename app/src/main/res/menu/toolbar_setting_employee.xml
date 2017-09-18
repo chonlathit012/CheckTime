@@ -7,6 +7,10 @@
         android:title="Edit profile"
         app:showAsAction="never"/>
     <item
+        android:id="@+id/resign"
+        android:title="Resign"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/signout"
         android:title="Sign out"
         app:showAsAction="never"/>

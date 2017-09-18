@@ -9,6 +9,7 @@ public class CreateCompanyData {
     String company_name;
     String start_time;
     String finish_time;
+    String logo_url;
 
     public String getId() {
         return id;
@@ -40,5 +41,13 @@ public class CreateCompanyData {
 
     public void setFinish_time(String finish_time) {
         this.finish_time = finish_time;
+    }
+
+    public String getLogo_url() {
+        return logo_url;
+    }
+
+    public void setLogo_url(String logo_url) {
+        this.logo_url = logo_url;
     }
 }

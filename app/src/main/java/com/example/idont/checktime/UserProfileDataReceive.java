@@ -11,6 +11,7 @@ public class UserProfileDataReceive {
     String email;
     String birthday;
     String phone_number;
+    String photo_url;
 
     public String getId() {
         return id;
@@ -58,5 +59,13 @@ public class UserProfileDataReceive {
 
     public void setPhone_number(String phone_number) {
         this.phone_number = phone_number;
+    }
+
+    public String getPhoto_url() {
+        return photo_url;
+    }
+
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
     }
 }

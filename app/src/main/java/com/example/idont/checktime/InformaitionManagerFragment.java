@@ -25,6 +25,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
+    TextView textViewNoData;
     TextView textViewDay;
     TextView textViewDayColor;
     TextView textViewTotal;
@@ -71,10 +72,9 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         textViewDayColor = (TextView) view.findViewById(R.id.day_color);
         textViewTotal = (TextView) view.findViewById(R.id.total);
         textViewTotalColor = (TextView) view.findViewById(R.id.total_color);
+        textViewNoData = (TextView) view.findViewById(R.id.textViewNoData);
 
         getCompanyId();
-//        randomSet(pieView);
-
     }
 
     public void showEmployeeCount() {
@@ -109,6 +109,8 @@ public class InformaitionManagerFragment extends Fragment implements Test {
 
             informationManagerCustomAdapter = new InformationManagerCustomAdapter(getActivity(),listDataReceives);
             listView.setAdapter(informationManagerCustomAdapter);
+        } else {
+            textViewNoData.setText("No data");
         }
 
     }
@@ -182,6 +184,9 @@ public class InformaitionManagerFragment extends Fragment implements Test {
                 break;
             case "Get data sucess.":
                 showEmployeeCount();
+                break;
+            case "Get data failed.":
+                textViewNoData.setText("No data.");
                 break;
         }
     }

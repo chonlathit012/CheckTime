@@ -103,6 +103,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
     String json = "";
     String jsonReceive = "";
     String uid = null;
+    String url_photo = "1";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -201,6 +202,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
                     progressDialog.dismiss();
                     Toast.makeText(EditUserProfileActivity.this, "User profile updated.", Toast.LENGTH_SHORT).show();
                     finish();
+                    url_photo = taskSnapshot.getDownloadUrl().toString();
                     gson();
                 }
             });
@@ -220,6 +222,7 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         editProfileData.setLast_name(editTextLastname.getText().toString());
         editProfileData.setPhone_number(editTextPhoneNumber.getText().toString());
         editProfileData.setBirthday(buttonDate.getText().toString());
+        editProfileData.setPhoto_url(url_photo);
 
         EditProfileSend editProfileSend = new EditProfileSend();
         editProfileSend.setTarget("edit_profile_data");
@@ -238,22 +241,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         String lastname = userProfileReceive.getData().getLast_name();
         String birthday = userProfileReceive.getData().getBirthday();
         String phonenumber = userProfileReceive.getData().getPhone_number();
+        String photo_url = userProfileReceive.getData().getPhoto_url();
 
-        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
-
-        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(EditUserProfileActivity.this)
-                        .load(uri)
-                        .into(imageView);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (photo_url != null) {
+            Glide.with(EditUserProfileActivity.this)
+                    .load(photo_url)
+                    .into(imageView);
+        }
 
         editTextFirstname.setText(firstname);
         editTextLastname.setText(lastname);
@@ -338,6 +332,5 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
             }
         }
         imageView.setImageBitmap(bitmap);
-
     }
 }

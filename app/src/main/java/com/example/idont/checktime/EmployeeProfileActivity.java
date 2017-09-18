@@ -92,6 +92,7 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
         String lastname = userProfileReceive.getData().getLast_name();
         String birthday = userProfileReceive.getData().getBirthday();
         String phonenumber = userProfileReceive.getData().getPhone_number();
+        String photo_url = userProfileReceive.getData().getPhoto_url();
 
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -109,21 +110,11 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
             yearUser = Integer.parseInt(bi);
         }
 
-        StorageReference imageRef = storageReference.child("userProfile/"+uid); // id of user
-
-        imageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                Glide.with(EmployeeProfileActivity.this)
-                        .load(uri)
-                        .into(imageView);
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-//                Toast.makeText(EditUserProfileActivity.this, "Download failed.", Toast.LENGTH_SHORT).show();
-            }
-        });
+        if (photo_url != null) {
+            Glide.with(EmployeeProfileActivity.this)
+                    .load(photo_url)
+                    .into(imageView);
+        }
 
         textViewFirstname.setText("Firstname : " + firstname);
         textViewLastname.setText("Lastname : " + lastname);

@@ -7,7 +7,7 @@ package com.example.idont.checktime;
 public class EmployeeListManagerDataReceive {
     String id;
     private String display_name;
-    private String logo_url;
+    private String photo_url;
 
     public String getId() {
         return id;
@@ -25,11 +25,11 @@ public class EmployeeListManagerDataReceive {
         this.display_name = display_name;
     }
 
-    public String getLogo_url() {
-        return logo_url;
+    public String getPhoto_url() {
+        return photo_url;
     }
 
-    public void setLogo_url(String logo_url) {
-        this.logo_url = logo_url;
+    public void setPhoto_url(String photo_url) {
+        this.photo_url = photo_url;
     }
 }

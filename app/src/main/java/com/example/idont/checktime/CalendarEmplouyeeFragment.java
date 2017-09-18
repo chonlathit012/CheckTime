@@ -84,6 +84,11 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
         myCalendar.setCurrentDateBackgroundColor("#ed1547");
         myCalendar.setCurrentDateTextColor("#ffffff");
 
+        myCalendar.setHolidayCellBackgroundColor("#aad4ed");
+        myCalendar.setHolidayCellTextColor("#000000");
+
+        addHoliday();
+
         myCalendar.setOnDateClickListener(new OnDateClickListener() {
             @Override
             public void onClick(Date date) {
@@ -188,6 +193,28 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
                 myCalendar.showMonthView();
             }
         }
+    }
+
+    public void addHoliday(){
+        myCalendar.addHoliday("1-1-2017");
+        myCalendar.addHoliday("28-1-2017");
+        myCalendar.addHoliday("11-2-2017");
+        myCalendar.addHoliday("13-2-2017");
+        myCalendar.addHoliday("6-4-2017");
+        myCalendar.addHoliday("13-4-2017");
+        myCalendar.addHoliday("1-5-2017");
+        myCalendar.addHoliday("5-5-2017");
+        myCalendar.addHoliday("10-5-2017");
+        myCalendar.addHoliday("8-7-2017");
+        myCalendar.addHoliday("9-7-2017");
+        myCalendar.addHoliday("10-7-2017");
+        myCalendar.addHoliday("12-8-2017");
+        myCalendar.addHoliday("14-8-2017");
+        myCalendar.addHoliday("23-10-2017");
+        myCalendar.addHoliday("5-12-2017");
+        myCalendar.addHoliday("10-12-2017");
+        myCalendar.addHoliday("11-12-2017");
+        myCalendar.addHoliday("31-12-2017");
     }
 
     public static String getDate(long milliSeconds, String dateFormat) {

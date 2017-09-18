@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 /**
@@ -20,11 +22,13 @@ public class CompanyListCustomAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private ViewHolder viewHolder;
     private List<CompanyListDataReceive> companyListDataReceives;
+    private Context context;
 
     public CompanyListCustomAdapter(Activity activity, List<CompanyListDataReceive> companyListDataReceives) {
         layoutInflater = (LayoutInflater) activity.getSystemService(
                 Context.LAYOUT_INFLATER_SERVICE);
         this.companyListDataReceives = companyListDataReceives;
+        context = activity;
     }
 
     private static class ViewHolder {
@@ -78,6 +82,13 @@ public class CompanyListCustomAdapter extends BaseAdapter {
         viewHolder.textViewCompanyName.setText(companyListDataReceive.getCompany_name());
         viewHolder.textViewStartTime.setText(companyListDataReceive.getStart_time());
         viewHolder.textViewFinishTime.setText(companyListDataReceive.getFinish_time());
+        String logo_url = companyListDataReceive.getLogo_url();
+
+        if (logo_url != null) {
+            Glide.with(context)
+                    .load(logo_url)
+                    .into(viewHolder.company_photo);
+        }
 
         return convertView;
     }
