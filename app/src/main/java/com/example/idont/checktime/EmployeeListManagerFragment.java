@@ -39,7 +39,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
     String jsonReceive = "";
     String uid;
     String company_id;
-    String empolyee_id;
+    String employee_id;
 
     ListView listView;
     TextView textViewNoEmployee;
@@ -87,10 +87,10 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
                 List<EmployeeListManagerDataReceive> listManagerDataReceives = employeeListManagerRecive.
                         getData().getEmployee_list();
 
-                empolyee_id = listManagerDataReceives.get(position).getId();
+                employee_id = listManagerDataReceives.get(position).getId();
 
                 Intent intent = new Intent(getActivity(),EmployeeProfileActivity.class);
-                intent.putExtra("employee_id",empolyee_id);
+                intent.putExtra("employee_id",employee_id);
                 startActivity(intent);
             }
         });

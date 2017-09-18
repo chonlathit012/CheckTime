@@ -5,15 +5,19 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,19 +38,26 @@ import java.util.Calendar;
  */
 public class SettingEmployeeFragment extends Fragment implements Test {
 
+    private static final String[] TIMES = {"none", "before 5 min", "before 10 min", "before 15 min"};
+
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
     StorageReference storageReference;
 
+    SharedPreferences sharedPreferences;
+
     String uid;
     String json = "";
     String jsonReceive = "";
+    String selectTime;
 
     TextView textViewFirstname;
     TextView textViewLastname;
     TextView textViewEmail;
     TextView textViewAge;
     TextView textViewPhonenumber;
+
+    Button buttonSelectTime;
     ImageView imageView;
 
     public static SettingEmployeeFragment newInstance() {
@@ -61,8 +72,11 @@ public class SettingEmployeeFragment extends Fragment implements Test {
         return inflater.inflate(R.layout.fragment_setting_employee, container, false);
     }
 
-    public void onViewCreated(final View view, Bundle savedInstanceState) {
+    public void onViewCreated(final View view, final Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String stringValue = sharedPreferences.getString("Time", "Select time");
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -74,9 +88,48 @@ public class SettingEmployeeFragment extends Fragment implements Test {
         textViewLastname = (TextView) view.findViewById(R.id.textViewLastname);
         textViewAge = (TextView) view.findViewById(R.id.textViewAge);
         textViewPhonenumber = (TextView) view.findViewById(R.id.textViewPhonenumber);
+
+        buttonSelectTime =(Button) view.findViewById(R.id.buttonSelectTime);
         imageView = (ImageView) view.findViewById(R.id.imageView);
 
+        buttonSelectTime.setText(stringValue);
+
         getUserData();
+
+        buttonSelectTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder =
+                        new AlertDialog.Builder(getActivity());
+                builder.setTitle("Select notification time");
+                builder.setSingleChoiceItems(TIMES, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (TIMES[which].equals("none")){
+                            selectTime = "Select time";
+                        } else {
+                            selectTime = TIMES[which];
+                        }
+                    }
+                });
+                builder.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putString("Time", selectTime);
+                        editor.apply();
+
+                        buttonSelectTime.setText(selectTime);
+                        dialog.dismiss();
+                    }
+                });
+
+                builder.setNegativeButton("cancel", null);
+                builder.create();
+                builder.show();
+            }
+        });
 
     }
 

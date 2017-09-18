@@ -38,6 +38,7 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
     String start_time;
     String finish_time;
     String wifi = "58:8d:09:e2:a5:81";
+    String checkWifi;
 
     int state = 0;
 
@@ -69,44 +70,57 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
         buttonCheckTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (state == 0) {
-                    AlertDialog.Builder builder =
-                            new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Are you sure you want to check in?");
-                    builder.setPositiveButton("Check in", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            checkIn();
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
+                if (checkWifi != null) {
+                    if (state == 0) {
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Are you sure you want to check in?");
+                        builder.setPositiveButton("Check in", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                checkIn();
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
 
-                        }
-                    });
-                    builder.show();
-                } else if (state == 1) {
+                            }
+                        });
+                        builder.show();
+                    } else if (state == 1) {
+                        AlertDialog.Builder builder =
+                                new AlertDialog.Builder(getActivity());
+                        builder.setMessage("Are you sure you want to check out?");
+                        builder.setPositiveButton("Check out", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                checkOut();
+                            }
+                        });
+                        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        builder.show();
+                    }
+                } else {
                     AlertDialog.Builder builder =
                             new AlertDialog.Builder(getActivity());
-                    builder.setMessage("Are you sure you want to check out?");
-                    builder.setPositiveButton("Check out", new DialogInterface.OnClickListener() {
+                    builder.setMessage("Can't checktime Please try again.");
+                    builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int id) {
-                            checkOut();
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
 
                         }
                     });
                     builder.show();
                 }
+
             }
         });
 
-//        detectWifi();
         getStateButton();
+        detectWifi();
     }
 
     public void checkIn() {
@@ -178,7 +192,7 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
             String bssid_string = string[1];
             String bssid = bssid_string.split(": ")[1];
             if (bssid.equals(wifi)) {
-                Toast.makeText(getActivity(), "success", Toast.LENGTH_SHORT).show();
+                checkWifi = wifi;
                 break;
             }
         }

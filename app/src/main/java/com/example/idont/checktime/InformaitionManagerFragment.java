@@ -1,14 +1,17 @@
 package com.example.idont.checktime;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -39,6 +42,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
     String message;
     String uid;
     String company_id;
+    String employee_id;
 
     int totalNum = 2;
     int totalem;
@@ -75,6 +79,22 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         textViewNoData = (TextView) view.findViewById(R.id.textViewNoData);
 
         getCompanyId();
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                getEmployeeCount();
+                Gson gson = new Gson();
+                InformationReceive informationReceive = gson.fromJson(jsonReceive,InformationReceive.class);
+                List<InformationListDataReceive> listDataReceives = informationReceive.getData().getEmployee_list_late();
+
+                employee_id = listDataReceives.get(position).getId();
+
+                Intent intent = new Intent(getActivity(),EmployeeProfileActivity.class);
+                intent.putExtra("employee_id",employee_id);
+                startActivity(intent);
+            }
+        });
     }
 
     public void showEmployeeCount() {
