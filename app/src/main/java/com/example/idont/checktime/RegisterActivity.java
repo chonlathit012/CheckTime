@@ -163,7 +163,8 @@ public class RegisterActivity extends AppCompatActivity implements Test {
                 String lastName = editTextLastname.getText().toString().trim();
                 String phoneNumber = editTextPhoneNumber.getText().toString().trim();
 
-                if (!rePassword.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && !phoneNumber.isEmpty()) {
+                if (!rePassword.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && !phoneNumber.isEmpty()
+                        && phoneNumber.length() > 9) {
                     if (!buttonDate.getText().toString().equals("Select Date")) {
                         regisUser();
                     } else {
@@ -282,6 +283,10 @@ public class RegisterActivity extends AppCompatActivity implements Test {
         String phoneNumber = editTextPhoneNumber.getText().toString().trim();
         if (phoneNumber.isEmpty()) {
             textInputLayoutPhonenumber.setError(getString(R.string.err_msg_phone_number));
+            requestFocus(editTextPhoneNumber);
+            return false;
+        } else if (phoneNumber.length() < 9) {
+            textInputLayoutPhonenumber.setError(getString(R.string.err_msg_phone_less));
             requestFocus(editTextPhoneNumber);
             return false;
         } else {

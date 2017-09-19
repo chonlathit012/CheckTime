@@ -15,14 +15,20 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
 
-public class MainEmployeeActivity extends AppCompatActivity {
+public class MainEmployeeActivity extends AppCompatActivity implements Test {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
+    String uid;
+    String json;
+    String jsonReceive;
 
     Menu menutest;
 
@@ -35,6 +41,7 @@ public class MainEmployeeActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
+        uid = firebaseUser.getUid();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
@@ -86,6 +93,20 @@ public class MainEmployeeActivity extends AppCompatActivity {
         transaction.commit();
     }
 
+    public void resignDataEmployee() {
+        Gson gson = new Gson();
+        ResignData resignData = new ResignData();
+        resignData.setId(uid);
+
+        ResignSend resignSend = new ResignSend();
+        resignSend.setTarget("resign_employee");
+        resignSend.setData(resignData);
+
+        json = gson.toJson(resignSend);
+
+        new HttpTask(MainEmployeeActivity.this).execute(json);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menutest = menu;
@@ -99,6 +120,25 @@ public class MainEmployeeActivity extends AppCompatActivity {
 
         if (id == R.id.edit_profile) {
             startActivity(new Intent(MainEmployeeActivity.this, EditUserProfileActivity.class));
+        }
+
+        if (id == R.id.resign) {
+            AlertDialog.Builder builder =
+                    new AlertDialog.Builder(MainEmployeeActivity.this);
+            builder.setTitle("Resign !!");
+            builder.setMessage("Are you sure you want to resign?");
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    resignDataEmployee();
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+
+                }
+            });
+            builder.show();
         }
 
         if (id == R.id.signout) {
@@ -139,5 +179,23 @@ public class MainEmployeeActivity extends AppCompatActivity {
                         MainEmployeeActivity.super.onBackPressed();
                     }
                 }).create().show();
+    }
+
+    @Override
+    public void onPost(String s) {
+        jsonReceive = s;
+
+        Gson gson = new Gson();
+        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+
+        String message = checkTitle.getMessage();
+
+        switch (message) {
+            case "Resign success.":
+                firebaseAuth.signOut();
+                startActivity(new Intent(MainEmployeeActivity.this, LoginActivity.class));
+                finish();
+                break;
+        }
     }
 }

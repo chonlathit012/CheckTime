@@ -202,4 +202,10 @@ public class UserProfileFragment extends Fragment implements Test {
                 break;
         }
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        getUserData();
+    }
 }

@@ -20,11 +20,14 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -179,6 +182,56 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
             }
         });
 
+        editTextFirstname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateFirstname();
+            }
+        });
+
+        editTextLastname.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateLastname();
+            }
+        });
+        editTextPhoneNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validatePhonenuumber();
+            }
+        });
+
     }
 
     public void editProfile() {
@@ -271,6 +324,62 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
 
     }
 
+    public void checkForm() {
+        if (!validateFirstname()) {
+            return;
+        } else if (!validateLastname()) {
+            return;
+        } else if (!validatePhonenuumber()) {
+            return;
+        }
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
+    private boolean validateFirstname() {
+        String firstName = editTextFirstname.getText().toString().trim();
+        if (firstName.isEmpty()) {
+            textInputLayoutFirstname.setError(getString(R.string.err_msg_firstname));
+            requestFocus(editTextFirstname);
+            return false;
+        } else {
+            textInputLayoutFirstname.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validateLastname() {
+        String lastname = editTextLastname.getText().toString().trim();
+        if (lastname.isEmpty()) {
+            textInputLayoutLastname.setError(getString(R.string.err_msg_lastname));
+            requestFocus(editTextLastname);
+            return false;
+        } else {
+            textInputLayoutLastname.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    private boolean validatePhonenuumber() {
+        String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+        if (phoneNumber.isEmpty()) {
+            textInputLayoutPhonenumber.setError(getString(R.string.err_msg_phone_number));
+            requestFocus(editTextPhoneNumber);
+            return false;
+        } else if (phoneNumber.length() < 9) {
+            textInputLayoutPhonenumber.setError(getString(R.string.err_msg_phone_less));
+            requestFocus(editTextPhoneNumber);
+            return false;
+        } else {
+            textInputLayoutPhonenumber.setErrorEnabled(false);
+        }
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_edit_user, menu);
@@ -282,7 +391,21 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
         int id = item.getItemId();
 
         if (id == R.id.save) {
-            editProfile();
+            checkForm();
+
+            String firstName = editTextFirstname.getText().toString().trim();
+            String lastName = editTextLastname.getText().toString().trim();
+            String phoneNumber = editTextPhoneNumber.getText().toString().trim();
+
+            if (!firstName.isEmpty() && !lastName.isEmpty() && !phoneNumber.isEmpty() && phoneNumber.length() > 8) {
+                if (!buttonDate.getText().toString().equals("Select Date")) {
+                    editProfile();
+                } else {
+                    Snackbar snackbar = Snackbar
+                            .make(coordinatorLayout, "Please select birthday", Snackbar.LENGTH_LONG);
+                    snackbar.show();
+                }
+            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -326,11 +449,13 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
             bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        imageView.setImageBitmap(bitmap);
+
     }
+
 }

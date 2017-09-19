@@ -329,11 +329,11 @@ public class SettingManagerFragment extends Fragment implements Test {
             bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
+                imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        imageView.setImageBitmap(bitmap);
     }
 }

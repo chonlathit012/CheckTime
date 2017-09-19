@@ -29,6 +29,7 @@ public class GpsTracker implements LocationListener {
         if (isGPSEnabled) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 6000, 10, this);
             Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationManager.removeUpdates(this);
             return location;
         } else {
             Toast.makeText(context, "Please enable GPS.", Toast.LENGTH_SHORT).show();

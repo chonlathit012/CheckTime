@@ -1,12 +1,15 @@
 package com.example.idont.checktime;
 
+import android.*;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
@@ -42,6 +45,9 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
 
     int state = 0;
 
+    double lat = 0.0;
+    double lng = 0.0;
+
     WifiManager wifiManager;
     List<ScanResult> wifiList;
     Data[] data;
@@ -67,10 +73,19 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
 
         buttonCheckTime = (Button) view.findViewById(R.id.buttonCheckTime);
 
+        ActivityCompat.requestPermissions(getActivity(), new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION}, 123);
+
         buttonCheckTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (checkWifi != null) {
+                GpsTracker gpsTracker = new GpsTracker(getActivity());
+                Location location = gpsTracker.getLocation();
+                if (location != null) {
+                    lat = location.getLatitude();
+                    lng = location.getLongitude();
+                }
+
+                if (checkWifi != null || (lat < 13.72238400 && lat > 13.7215001 && lng > 100.5068001 && lng < 100.5073648)) {
                     if (state == 0) {
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(getActivity());
@@ -115,7 +130,6 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
                     });
                     builder.show();
                 }
-
             }
         });
 

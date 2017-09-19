@@ -47,6 +47,7 @@
     <string name="err_msg_phone_number">Enter the phonenumber</string>
     <string name="err_msg_passwordless">Password must be 6 or more</string>
     <string name="err_msg_repassword">Password not same</string>
+    <string name="err_msg_phone_less">Phonenumber must be 9 or more</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">No Company</string>

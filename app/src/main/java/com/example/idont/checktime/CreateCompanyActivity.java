@@ -307,11 +307,11 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
             bitmap = null;
             try {
                 bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), selectedImage);
+                imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
-        imageView.setImageBitmap(bitmap);
     }
 }
