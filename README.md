@@ -1,2 +1,2 @@
-# CheckTime
-Project
+# CheckTime Appliucation project
+
