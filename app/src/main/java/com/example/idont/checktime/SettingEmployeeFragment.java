@@ -20,11 +20,15 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -51,6 +55,7 @@ public class SettingEmployeeFragment extends Fragment implements Test {
     StorageReference storageReference;
 
     SharedPreferences sharedPreferences;
+    ProgressBar progressBar;
 
     String uid;
     String company_id;
@@ -84,6 +89,8 @@ public class SettingEmployeeFragment extends Fragment implements Test {
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String stringValue = sharedPreferences.getString("Time", "Select time");
+
+        progressBar = (ProgressBar) view.findViewById(R.id.progress);
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -305,6 +312,20 @@ public class SettingEmployeeFragment extends Fragment implements Test {
         if (photo_url != null) {
             Glide.with(getActivity())
                     .load(photo_url)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
+                    .load(photo_url)
                     .into(imageView);
         }
 
@@ -333,35 +354,48 @@ public class SettingEmployeeFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
+            String message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get profile data success.":
-                showUserData();
-                break;
-            case "No data.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "No user.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "Get company_id success.":
-                showCompanyId();
-                break;
-            case "No company.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "Get company_data success.":
-                showCompanyData();
-                break;
-            case "No company data.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
+            switch (message) {
+                case "Get profile data success.":
+                    showUserData();
+                    break;
+                case "No data.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "No user.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Get company_id success.":
+                    showCompanyId();
+                    break;
+                case "No company.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Get company_data success.":
+                    showCompanyData();
+                    break;
+                case "No company data.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 

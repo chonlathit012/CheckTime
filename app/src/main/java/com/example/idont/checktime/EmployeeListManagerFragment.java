@@ -1,13 +1,17 @@
 package com.example.idont.checktime;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,6 +68,8 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        setupUI(view.findViewById(R.id.layout));
+        
         firebaseAuth = FirebaseAuth.getInstance();
         firebaseUser = firebaseAuth.getCurrentUser();
         uid = firebaseUser.getUid();
@@ -166,24 +172,66 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
+            String message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get company_id success.":
-                showCompanyId();
-                break;
-            case "Get employee_list sucess.":
-                showEmployeeList();
-                break;
-            case "Get employee_list failed.":
-                textViewNoEmployee.setText("No Employee");
-                imageView.setImageResource(R.drawable.no_person);
-                break;
+            switch (message) {
+                case "Get company_id success.":
+                    showCompanyId();
+                    break;
+                case "Get employee_list sucess.":
+                    showEmployeeList();
+                    break;
+                case "Get employee_list failed.":
+                    textViewNoEmployee.setText("No Employee");
+                    imageView.setImageResource(R.drawable.no_person);
+                    break;
+            }
+        }
+    }
+
+    public static void hideSoftKeyboard(Activity activity) {
+        InputMethodManager inputMethodManager =
+                (InputMethodManager) activity.getSystemService(
+                        Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(
+                activity.getCurrentFocus().getWindowToken(), 0);
+    }
+
+    public void setupUI(View view) {
+
+        // Set up touch listener for non-text box views to hide keyboard.
+        if (!(view instanceof EditText)) {
+            view.setOnTouchListener(new View.OnTouchListener() {
+                public boolean onTouch(View v, MotionEvent event) {
+                    hideSoftKeyboard(getActivity());
+                    return false;
+                }
+            });
+        }
+
+        //If a layout container, iterate over children and seed recursion.
+        if (view instanceof ViewGroup) {
+            for (int i = 0; i < ((ViewGroup) view).getChildCount(); i++) {
+                View innerView = ((ViewGroup) view).getChildAt(i);
+                setupUI(innerView);
+            }
         }
     }
 }

@@ -3,6 +3,7 @@ package com.example.idont.checktime;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -252,24 +253,37 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(this);
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
-        switch (message) {
-            case "Created data success.":
-                Intent intent = new Intent(CreateCompanyActivity.this, LoadActivity.class);
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                startActivity(intent);
-                finish();
-                break;
-            case "Company name already exist.":
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                break;
-            default:
-                showDisplayName();
+            String message = checkTitle.getMessage();
+            switch (message) {
+                case "Created data success.":
+                    Intent intent = new Intent(CreateCompanyActivity.this, LoadActivity.class);
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    startActivity(intent);
+                    finish();
+                    break;
+                case "Company name already exist.":
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    showDisplayName();
+            }
         }
     }
 
@@ -290,7 +304,7 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
 
             if (company_name.isEmpty() || start_time.equals("Select Time") || finish_time.equals("Select Time")) {
                 Toast.makeText(this, "Please enter data.", Toast.LENGTH_SHORT).show();
-            } else{
+            } else {
                 imageUpload();
             }
         }

@@ -122,24 +122,24 @@ public class MainEmployeeActivity extends AppCompatActivity implements Test {
             startActivity(new Intent(MainEmployeeActivity.this, EditUserProfileActivity.class));
         }
 
-        if (id == R.id.resign) {
-            AlertDialog.Builder builder =
-                    new AlertDialog.Builder(MainEmployeeActivity.this);
-            builder.setTitle("Resign !!");
-            builder.setMessage("Are you sure you want to resign?");
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    resignDataEmployee();
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-
-                }
-            });
-            builder.show();
-        }
+//        if (id == R.id.resign) {
+//            AlertDialog.Builder builder =
+//                    new AlertDialog.Builder(MainEmployeeActivity.this);
+//            builder.setTitle("Resign !!");
+//            builder.setMessage("Are you sure you want to resign?");
+//            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+//                public void onClick(DialogInterface dialog, int id) {
+//                    resignDataEmployee();
+//                }
+//            });
+//            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+//                @Override
+//                public void onClick(DialogInterface dialog, int which) {
+//
+//                }
+//            });
+//            builder.show();
+//        }
 
         if (id == R.id.signout) {
             AlertDialog.Builder builder =
@@ -170,7 +170,8 @@ public class MainEmployeeActivity extends AppCompatActivity implements Test {
     @Override
     public void onBackPressed() {
         new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
+                .setIcon(R.drawable.logo)
+                .setTitle("Exit application?")
                 .setMessage("Are you sure you want to exit?")
                 .setNegativeButton(android.R.string.no, null)
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {

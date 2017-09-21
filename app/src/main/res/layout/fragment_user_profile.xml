@@ -88,7 +88,7 @@
                 android:layout_below="@+id/textViewPhonenumber"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="35dp"
-                android:background="#ed4242"
+                android:background="@drawable/button_red"
                 android:text="Sign Out"
                 android:textColor="#ffffff" />
         </RelativeLayout>

@@ -143,20 +143,33 @@ public class CompanyListFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
+            String message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Join success.":
-                startActivity(new Intent(getActivity(), LoadActivity.class));
-                getActivity().finish();
-                break;
-            default :
-                showData();
+            switch (message) {
+                case "Join success.":
+                    startActivity(new Intent(getActivity(), LoadActivity.class));
+                    getActivity().finish();
+                    break;
+                default:
+                    showData();
+            }
         }
     }
 }

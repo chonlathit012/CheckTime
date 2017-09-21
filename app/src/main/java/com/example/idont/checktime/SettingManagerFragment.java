@@ -1,8 +1,6 @@
 package com.example.idont.checktime;
 
-
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -13,21 +11,25 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -37,7 +39,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 
-import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Calendar;
@@ -51,7 +52,7 @@ public class SettingManagerFragment extends Fragment implements Test {
     StorageReference storageReference;
 
     EditText editTextCompanyName;
-    TextInputEditText textInputEditTextCompanyName;
+    TextInputLayout textInputEditTextCompanyName;
 
     CoordinatorLayout coordinatorLayout;
 
@@ -68,6 +69,7 @@ public class SettingManagerFragment extends Fragment implements Test {
 
     Uri selectedImage;
     ProgressDialog progressDialog;
+    ProgressBar progressBar;
 
     String json = "";
     String jsonReceive = "";
@@ -91,6 +93,7 @@ public class SettingManagerFragment extends Fragment implements Test {
         super.onViewCreated(view, savedInstanceState);
 
         progressDialog = new ProgressDialog(getActivity());
+        progressBar = (ProgressBar) view.findViewById(R.id.progress);
 
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -101,7 +104,7 @@ public class SettingManagerFragment extends Fragment implements Test {
                 .coordinatorLayout);
 
         editTextCompanyName = (EditText) view.findViewById(R.id.editCompanyName);
-//        textInputEditTextCompanyName = (TextInputEditText) view.findViewById(R.id.input_editCompanyName);
+        textInputEditTextCompanyName = (TextInputLayout) view.findViewById(R.id.input_editCompanyName);
 
         buttonSave = (Button) view.findViewById(R.id.buttonSave);
         buttonStartTime = (Button) view.findViewById(R.id.buttonSelectTimeStart);
@@ -112,7 +115,13 @@ public class SettingManagerFragment extends Fragment implements Test {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editComapanyData();
+                checkForm();
+
+                String companyName = editTextCompanyName.getText().toString().trim();
+
+                if (!companyName.isEmpty()) {
+                    editComapanyData();
+                }
             }
         });
 
@@ -172,6 +181,23 @@ public class SettingManagerFragment extends Fragment implements Test {
                             }
                         }, hour, minute, true);
                 timePickerDialog.show();
+            }
+        });
+
+        editTextCompanyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                validateCompanyName();
             }
         });
 
@@ -274,6 +300,19 @@ public class SettingManagerFragment extends Fragment implements Test {
         if (logo_url != null) {
             Glide.with(getActivity())
                     .load(logo_url)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imageView);
         }
 
@@ -282,40 +321,77 @@ public class SettingManagerFragment extends Fragment implements Test {
         buttonFinishTime.setText(finish_time);
     }
 
+    private boolean validateCompanyName() {
+        String companyName = editTextCompanyName.getText().toString().trim();
+        if (companyName.isEmpty()) {
+            textInputEditTextCompanyName.setError(getString(R.string.err_msg_company_name));
+            requestFocus(editTextCompanyName);
+            return false;
+        } else {
+            textInputEditTextCompanyName.setErrorEnabled(false);
+        }
+        return true;
+    }
+
+    public void checkForm() {
+        if (!validateCompanyName()) {
+            return;
+        }
+    }
+
+    private void requestFocus(View view) {
+        if (view.requestFocus()) {
+            getActivity().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        }
+    }
+
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
+            String message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get company_id success.":
-                showCompanyId();
-            break;
-            case "No company.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "No user.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "Get company_data success.":
-                showCompanyData();
-                break;
-            case "No company data.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "company name already exist.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "update successful.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "update failed.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
+            switch (message) {
+                case "Get company_id success.":
+                    showCompanyId();
+                    break;
+                case "No company.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "No user.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Get company_data success.":
+                    showCompanyData();
+                    break;
+                case "No company data.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "company name already exist.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "update successful.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "update failed.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
     }
 
@@ -331,9 +407,9 @@ public class SettingManagerFragment extends Fragment implements Test {
                 bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), selectedImage);
                 imageView.setImageBitmap(bitmap);
             } catch (IOException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
+
 }

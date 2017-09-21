@@ -1,13 +1,18 @@
 package com.example.idont.checktime;
 
 
+import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
 import com.desai.vatsal.mydynamiccalendar.OnDateClickListener;
@@ -195,7 +200,7 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
         }
     }
 
-    public void addHoliday(){
+    public void addHoliday() {
         myCalendar.addHoliday("1-1-2017");
         myCalendar.addHoliday("28-1-2017");
         myCalendar.addHoliday("11-2-2017");
@@ -236,16 +241,29 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
-        message = checkTitle.getMessage();
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get time_list success.":
-                showTimeList();
-                break;
+            switch (message) {
+                case "Get time_list success.":
+                    showTimeList();
+                    break;
+            }
         }
 
     }

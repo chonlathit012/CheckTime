@@ -1,9 +1,12 @@
 package com.example.idont.checktime;
 
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +30,8 @@ public class InformaitionManagerFragment extends Fragment implements Test {
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
+
+    CoordinatorLayout coordinatorLayout;
 
     TextView textViewNoData;
     TextView textViewDay;
@@ -77,6 +82,9 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         textViewTotal = (TextView) view.findViewById(R.id.total);
         textViewTotalColor = (TextView) view.findViewById(R.id.total_color);
         textViewNoData = (TextView) view.findViewById(R.id.textViewNoData);
+
+        coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
+                .coordinatorLayout);
 
         getCompanyId();
 
@@ -192,22 +200,36 @@ public class InformaitionManagerFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
-        message = checkTitle.getMessage();
+            jsonReceive = s;
 
-        switch (message) {
-            case "Get company_id success.":
-                showCompanyId();
-                break;
-            case "Get data sucess.":
-                showEmployeeCount();
-                break;
-            case "Get data failed.":
-                textViewNoData.setText("No data.");
-                break;
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            message = checkTitle.getMessage();
+
+            switch (message) {
+                case "Get company_id success.":
+                    showCompanyId();
+                    break;
+                case "Get data sucess.":
+                    showEmployeeCount();
+                    break;
+                case "Get data failed.":
+                    textViewNoData.setText("No data.");
+                    break;
+            }
         }
     }
 }

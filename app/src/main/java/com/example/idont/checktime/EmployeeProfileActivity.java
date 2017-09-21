@@ -1,5 +1,6 @@
 package com.example.idont.checktime;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -9,10 +10,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,6 +33,7 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
     Toolbar toolbar;
 
     StorageReference storageReference;
+    ProgressBar progressBar;
 
     TextView textViewFirstname;
     TextView textViewLastname;
@@ -49,6 +55,7 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
         setContentView(R.layout.activity_employee_profile);
 
         storageReference = FirebaseStorage.getInstance().getReference();
+        progressBar = (ProgressBar) findViewById(R.id.progress);
 
         textViewEmail = (TextView) findViewById(R.id.textViewEmail);
         textViewFirstname = (TextView) findViewById(R.id.textViewFirstname);
@@ -113,6 +120,19 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
         if (photo_url != null) {
             Glide.with(EmployeeProfileActivity.this)
                     .load(photo_url)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(imageView);
         }
 
@@ -141,23 +161,36 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(this);
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
 
-        String message = checkTitle.getMessage();
+            String message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get profile data success.":
-                showUserData();
-                break;
-            case "No data.":
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                break;
-            case "No user.":
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
-                break;
+            switch (message) {
+                case "Get profile data success.":
+                    showUserData();
+                    break;
+                case "No data.":
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "No user.":
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                    break;
+            }
         }
 
     }

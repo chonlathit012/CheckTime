@@ -4,53 +4,66 @@
     android:layout_height="match_parent"
     tools:context="com.example.idont.checktime.CalendarEmplouyeeFragment">
 
-    <com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar
-        android:id="@+id/myCalendar"
+    <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/today"
-        android:background="#ed1547"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:textSize="20sp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="12dp"
-        android:layout_below="@+id/myCalendar"
-        android:layout_alignParentStart="true" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/text_today"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=" : Today"
-        android:paddingLeft="5dp"
-        android:textSize="20sp"
-        android:layout_alignBottom="@+id/today"
-        android:layout_toEndOf="@+id/today" />
+            <com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar
+                android:id="@+id/myCalendar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/holiday"
-        android:background="#aad4ed"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:textSize="20sp"
-        android:layout_alignBottom="@+id/text_today"
-        android:layout_toEndOf="@+id/text_today"
-        android:layout_marginStart="25dp"
-        android:layout_alignTop="@+id/today" />
+            <TextView
+                android:id="@+id/today"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/myCalendar"
+                android:layout_marginStart="26dp"
+                android:layout_marginTop="12dp"
+                android:background="#ed1547"
+                android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/text_holiday"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text=" : Holiday"
-        android:paddingLeft="5dp"
-        android:textSize="20sp"
-        android:layout_alignBottom="@+id/holiday"
-        android:layout_toEndOf="@+id/holiday" />
+            <TextView
+                android:id="@+id/text_today"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/today"
+                android:layout_toEndOf="@+id/today"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:text=" : Today"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/holiday"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignBottom="@+id/text_today"
+                android:layout_alignTop="@+id/today"
+                android:layout_marginStart="25dp"
+                android:layout_toEndOf="@+id/text_today"
+                android:background="#aad4ed"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/text_holiday"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/holiday"
+                android:layout_toEndOf="@+id/holiday"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:text=" : Holiday"
+                android:textSize="20sp" />
+
+        </RelativeLayout>
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </RelativeLayout>

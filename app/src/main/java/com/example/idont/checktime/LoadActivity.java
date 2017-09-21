@@ -1,5 +1,6 @@
 package com.example.idont.checktime;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -96,14 +97,27 @@ public class LoadActivity extends AppCompatActivity implements Test {
     @Override
     public void onPost(String s) {
         if (s.equals("No connection.")) {
-            Snackbar snackbar = Snackbar
-                    .make(coordinatorLayout, s, Snackbar.LENGTH_INDEFINITE).setAction("close", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            finish();
-                        }
-                    }).setActionTextColor(Color.rgb(129, 186, 219));
-            snackbar.show();
+//            Snackbar snackbar = Snackbar
+//                    .make(coordinatorLayout, s, Snackbar.LENGTH_INDEFINITE).setAction("close app", new View.OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                            finishAffinity();
+//                            System.exit(0);
+//                        }
+//                    }).setActionTextColor(Color.rgb(129, 186, 219));
+//            snackbar.show();
+
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(this);
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+
         } else {
             jsonReceive = s;
             showData();

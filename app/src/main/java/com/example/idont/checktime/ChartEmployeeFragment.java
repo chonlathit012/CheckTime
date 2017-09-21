@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -35,7 +36,6 @@ import im.dacer.androidcharts.BarView;
  */
 public class ChartEmployeeFragment extends Fragment implements Test {
 
-    int day = 30;
     BarView barView;
 
     View viewLine;
@@ -82,8 +82,6 @@ public class ChartEmployeeFragment extends Fragment implements Test {
         textView10 = (TextView) view.findViewById(R.id.textView1030);
 
         getTimeList();
-//        randomSet(barView);
-
 
     }
 
@@ -104,8 +102,6 @@ public class ChartEmployeeFragment extends Fragment implements Test {
             String start_time = listReceiveList.get(i).getStart_time();
             SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date dateNewStart;
-            Date hour;
-            Date minute;
             String newDate = null;
             String newHour = null;
             String newMinute = null;
@@ -167,9 +163,10 @@ public class ChartEmployeeFragment extends Fragment implements Test {
             AlertDialog.Builder builder =
                     new AlertDialog.Builder(getActivity());
             builder.setMessage("No connection.");
-            builder.setPositiveButton("CLOSE", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int id) {
-                    getActivity().finish();
+                    getActivity().finishAffinity();
+                    System.exit(0);
                 }
             });
             builder.show();

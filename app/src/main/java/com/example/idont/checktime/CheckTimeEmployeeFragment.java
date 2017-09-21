@@ -180,11 +180,11 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
         start_time = stateButtonReceive.getData().getStart_time();
 
         if (finish_time == null) {
-            buttonCheckTime.setBackgroundResource(R.color.btn_red_color);
+            buttonCheckTime.setBackgroundResource(R.drawable.button_red);
             buttonCheckTime.setText("CHECK OUT");
             state = 1;
         } else {
-            buttonCheckTime.setBackgroundResource(R.color.btn_gray_color);
+            buttonCheckTime.setBackgroundResource(R.drawable.button_grey);
             buttonCheckTime.setText("Wait Tomorrow");
             state = 2;
         }
@@ -214,40 +214,53 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(getActivity());
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    getActivity().finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
-        message = checkTitle.getMessage();
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get state_Button success.":
-                checkStateButton();
-                break;
-            case "No time of user.":
-                buttonCheckTime.setBackgroundResource(R.color.btn_green_color);
-                buttonCheckTime.setText("CHECK IN");
-                state = 0;
-                break;
-            case "No time of today.":
-                buttonCheckTime.setBackgroundResource(R.color.btn_green_color);
-                buttonCheckTime.setText("CHECK IN");
-                state = 0;
-                break;
-            case "Check in success.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                getStateButton();
-                break;
-            case "Check in failed.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "Wait tomorrow.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                break;
-            case "Check out success.":
-                Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
-                getStateButton();
-                break;
+            switch (message) {
+                case "Get state_Button success.":
+                    checkStateButton();
+                    break;
+                case "No time of user.":
+                    buttonCheckTime.setBackgroundResource(R.drawable.button_green);
+                    buttonCheckTime.setText("CHECK IN");
+                    state = 0;
+                    break;
+                case "No time of today.":
+                    buttonCheckTime.setBackgroundResource(R.drawable.button_green);
+                    buttonCheckTime.setText("CHECK IN");
+                    state = 0;
+                    break;
+                case "Check in success.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    getStateButton();
+                    break;
+                case "Check in failed.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Wait tomorrow.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    break;
+                case "Check out success.":
+                    Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                    getStateButton();
+                    break;
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.idont.checktime.SettingManagerFragment">
@@ -15,7 +16,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
             <LinearLayout
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
@@ -25,15 +25,28 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <de.hdodenhof.circleimageview.CircleImageView
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/imageView"
-                    android:layout_width="120dp"
-                    android:layout_height="120dp"
-                    android:src="@drawable/company"
-                    app:civ_border_width="2dp"
-                    app:civ_border_color="#FF000000"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ProgressBar
+                        android:id="@+id/progress"
+                        android:visibility="visible"
+                        android:layout_centerVertical="true"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp" />
+
+                    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/imageView"
+                        android:layout_width="120dp"
+                        android:layout_height="120dp"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/company"
+                        app:civ_border_color="#FF000000"
+                        app:civ_border_width="2dp" />
+
+                </RelativeLayout>
+
 
                 <Button
                     android:id="@+id/buttonSelectPhoto"
@@ -129,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginTop="13dp"
-                    android:background="@color/colorPrimary"
+                    android:background="@drawable/button"
                     android:text="Save"
                     android:textColor="#ffffff" />
 

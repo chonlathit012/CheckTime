@@ -1,9 +1,14 @@
 package com.example.idont.checktime;
 
+import android.content.DialogInterface;
+import android.graphics.Color;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.desai.vatsal.mydynamiccalendar.MyDynamicCalendar;
@@ -18,6 +23,8 @@ import java.util.List;
 public class CalendarActivity extends AppCompatActivity implements Test {
 
     MyDynamicCalendar myCalendar;
+
+    CoordinatorLayout coordinatorLayout;
 
     String uid;
     String json = "";
@@ -36,6 +43,9 @@ public class CalendarActivity extends AppCompatActivity implements Test {
         }
 
         myCalendar = (MyDynamicCalendar) findViewById(R.id.myCalendar);
+
+        coordinatorLayout = (CoordinatorLayout) findViewById(R.id
+                .coordinatorLayout);
 
         myCalendar.deleteAllEvent();
 
@@ -179,7 +189,7 @@ public class CalendarActivity extends AppCompatActivity implements Test {
         }
     }
 
-    public void addHoliday(){
+    public void addHoliday() {
         myCalendar.addHoliday("1-1-2017");
         myCalendar.addHoliday("28-1-2017");
         myCalendar.addHoliday("11-2-2017");
@@ -203,16 +213,29 @@ public class CalendarActivity extends AppCompatActivity implements Test {
 
     @Override
     public void onPost(String s) {
-        jsonReceive = s;
+        if (s.equals("No connection.")) {
+            android.app.AlertDialog.Builder builder =
+                    new android.app.AlertDialog.Builder(this);
+            builder.setMessage("No connection.");
+            builder.setPositiveButton("Close app", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    finishAffinity();
+                    System.exit(0);
+                }
+            });
+            builder.show();
+        } else {
+            jsonReceive = s;
 
-        Gson gson = new Gson();
-        CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
-        message = checkTitle.getMessage();
+            Gson gson = new Gson();
+            CheckTitle checkTitle = gson.fromJson(jsonReceive, CheckTitle.class);
+            message = checkTitle.getMessage();
 
-        switch (message) {
-            case "Get time_list success.":
-                showTimeList();
-                break;
+            switch (message) {
+                case "Get time_list success.":
+                    showTimeList();
+                    break;
+            }
         }
     }
 }

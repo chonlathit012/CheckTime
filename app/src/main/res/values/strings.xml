@@ -44,6 +44,7 @@
     <string name="err_msg_password">Enter the password</string>
     <string name="err_msg_firstname">Enter the firstname</string>
     <string name="err_msg_lastname">Enter the lastname</string>
+    <string name="err_msg_company_name">Enter the company name</string>
     <string name="err_msg_phone_number">Enter the phonenumber</string>
     <string name="err_msg_passwordless">Password must be 6 or more</string>
     <string name="err_msg_repassword">Password not same</string>
