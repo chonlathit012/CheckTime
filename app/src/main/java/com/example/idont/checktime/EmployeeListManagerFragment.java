@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
 
+    ProgressBar progressBar;
     String json = "";
     String jsonReceive = "";
     String uid;
@@ -78,6 +80,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
         textViewNoEmployee = (TextView) view.findViewById(R.id.textViewNoEmployee);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         searchView =(SearchView) view.findViewById(R.id.searchView);
+        progressBar = (ProgressBar) view.findViewById(R.id.progress);
 
         getCompanyId();
 
@@ -143,6 +146,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
         EmployeeListManagerRecive employeeListManagerRecive = gson.fromJson(jsonReceive, EmployeeListManagerRecive.class);
         List<EmployeeListManagerDataReceive> listManagerDataReceives = employeeListManagerRecive.getData().getEmployee_list();
 
+        progressBar.setVisibility(View.GONE);
         employeeListManagerCustomAdapter = new EmployeeListManagerCustomAdapter(getActivity(), listManagerDataReceives);
         listView.setAdapter(employeeListManagerCustomAdapter);
 
@@ -199,6 +203,7 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
                     showEmployeeList();
                     break;
                 case "Get employee_list failed.":
+                    progressBar.setVisibility(View.GONE);
                     textViewNoEmployee.setText("No Employee");
                     imageView.setImageResource(R.drawable.no_person);
                     break;

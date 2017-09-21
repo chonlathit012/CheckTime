@@ -315,6 +315,8 @@ public class SettingManagerFragment extends Fragment implements Test {
                         }
                     })
                     .into(imageView);
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
 
         editTextCompanyName.setText(company_name);

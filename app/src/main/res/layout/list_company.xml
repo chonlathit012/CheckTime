@@ -3,6 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:visibility="visible"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="3dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/company_photo"
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="11dp" />
+
     <de.hdodenhof.circleimageview.CircleImageView
         android:padding="7dp"
         xmlns:app="http://schemas.android.com/apk/res-auto"

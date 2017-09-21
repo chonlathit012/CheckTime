@@ -221,6 +221,7 @@ public class ChartEmployeeFragment extends Fragment implements Test {
                     break;
                 case "No time_list.":
                     imageView.setImageResource(R.drawable.no_icon);
+                    progressBar.setVisibility(View.GONE);
                     break;
             }
         }

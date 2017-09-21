@@ -291,6 +291,8 @@ public class EditUserProfileActivity extends AppCompatActivity implements Test {
                         }
                     })
                     .into(imageView);
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
 
         editTextFirstname.setText(firstname);

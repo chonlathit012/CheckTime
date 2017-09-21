@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.List;
 
@@ -39,6 +43,7 @@ public class CompanyListCustomAdapter extends BaseAdapter {
         TextView textViewCompanyName;
         TextView textViewStartTime;
         TextView textViewFinishTime;
+        ProgressBar progressBar;
 
     }
 
@@ -74,6 +79,8 @@ public class CompanyListCustomAdapter extends BaseAdapter {
             viewHolder.textViewStartTime = (TextView) convertView.findViewById(R.id.textViewStartTime);
             viewHolder.textViewFinishTime = (TextView) convertView.findViewById(R.id.textViewFinishTime);
 
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progress);
+
             convertView.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) convertView.getTag();
@@ -87,7 +94,22 @@ public class CompanyListCustomAdapter extends BaseAdapter {
         if (logo_url != null) {
             Glide.with(context)
                     .load(logo_url)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(viewHolder.company_photo);
+        } else {
+            viewHolder.progressBar.setVisibility(View.GONE);
         }
 
         return convertView;

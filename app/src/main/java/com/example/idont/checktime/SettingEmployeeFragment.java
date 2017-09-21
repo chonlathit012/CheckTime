@@ -327,6 +327,8 @@ public class SettingEmployeeFragment extends Fragment implements Test {
                     })
                     .load(photo_url)
                     .into(imageView);
+        } else{
+            progressBar.setVisibility(View.GONE);
         }
 
         textViewFirstname.setText("Firstname : " + firstname);

@@ -134,6 +134,8 @@ public class EmployeeProfileActivity extends AppCompatActivity implements Test{
                         }
                     })
                     .into(imageView);
+        } else {
+            progressBar.setVisibility(View.GONE);
         }
 
         textViewFirstname.setText("Firstname : " + firstname);
