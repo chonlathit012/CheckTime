@@ -1,14 +1,18 @@
 package com.example.idont.checktime;
 
 import android.*;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -22,12 +26,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
+import java.io.IOException;
 import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class CheckTimeEmployeeFragment extends Fragment implements Test {
+
+    private static final int CAMERA_REQUEST = 1888;
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -47,6 +54,8 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
 
     double lat = 0.0;
     double lng = 0.0;
+
+    Bitmap photo = null;
 
     WifiManager wifiManager;
     List<ScanResult> wifiList;
@@ -86,13 +95,16 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
                 }
 
                 if (checkWifi != null || (lat < 13.72238400 && lat > 13.7215001 && lng > 100.5068001 && lng < 100.5073648)) {
+
                     if (state == 0) {
                         AlertDialog.Builder builder =
                                 new AlertDialog.Builder(getActivity());
                         builder.setMessage("Are you sure you want to check in?");
                         builder.setPositiveButton("Check in", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                checkIn();
+                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                                checkIn();
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -108,7 +120,9 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
                         builder.setMessage("Are you sure you want to check out?");
                         builder.setPositiveButton("Check out", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                checkOut();
+                                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+//                                checkOut();
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -208,6 +222,20 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
             if (bssid.equals(wifi)) {
                 checkWifi = wifi;
                 break;
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == CAMERA_REQUEST && resultCode == Activity.RESULT_OK) {
+            photo = (Bitmap) data.getExtras().get("data");
+            if (state == 0) {
+                checkIn();
+            } else if (state == 1) {
+                checkOut();
             }
         }
     }

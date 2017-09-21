@@ -300,6 +300,7 @@ public class SettingManagerFragment extends Fragment implements Test {
         if (logo_url != null) {
             Glide.with(getActivity())
                     .load(logo_url)
+                    .error(R.drawable.alert)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

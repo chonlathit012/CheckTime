@@ -73,10 +73,10 @@ public class CalendarActivity extends AppCompatActivity implements Test {
         myCalendar.setCurrentDateBackgroundColor("#ed1547");
         myCalendar.setCurrentDateTextColor("#ffffff");
 
-        myCalendar.setHolidayCellBackgroundColor("#aad4ed");
-        myCalendar.setHolidayCellTextColor("#000000");
-
-        addHoliday();
+//        myCalendar.setHolidayCellBackgroundColor("#aad4ed");
+//        myCalendar.setHolidayCellTextColor("#000000");
+//
+//        addHoliday();
 
         myCalendar.setOnDateClickListener(new OnDateClickListener() {
             @Override

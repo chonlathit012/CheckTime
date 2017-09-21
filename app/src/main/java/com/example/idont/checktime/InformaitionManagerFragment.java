@@ -34,6 +34,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
     CoordinatorLayout coordinatorLayout;
 
     TextView textViewNoData;
+    TextView getTextViewNoDataList;
     TextView textViewDay;
     TextView textViewDayColor;
     TextView textViewTotal;
@@ -82,6 +83,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         textViewTotal = (TextView) view.findViewById(R.id.total);
         textViewTotalColor = (TextView) view.findViewById(R.id.total_color);
         textViewNoData = (TextView) view.findViewById(R.id.textViewNoData);
+        getTextViewNoDataList = (TextView) view.findViewById(R.id.textViewNoDataList);
 
         coordinatorLayout = (CoordinatorLayout) view.findViewById(R.id
                 .coordinatorLayout);
@@ -116,7 +118,10 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         ArrayList<PieHelper> pieHelperArrayList = new ArrayList<PieHelper>();
         ArrayList<Integer> intList = new ArrayList<Integer>();
 
-        if (day_count != null) {
+        if (!day_count.equals("0")) {
+            if (listDataReceives.size() == 0) {
+                getTextViewNoDataList.setText("No data");
+            }
             totalem = Integer.parseInt(total_count);
             late = Integer.parseInt(day_count);
             intList.add(0, late);

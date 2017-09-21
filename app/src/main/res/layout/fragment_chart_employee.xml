@@ -53,4 +53,11 @@
             android:id="@+id/bar_view" />
     </HorizontalScrollView>
 
+    <ProgressBar
+        android:id="@+id/progress"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+        android:visibility="visible" />
+
 </RelativeLayout>

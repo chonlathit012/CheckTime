@@ -24,6 +24,17 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/textViewNoDataList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/txt_blue_color"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:layout_marginTop="63dp"
+                android:layout_below="@+id/view"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
