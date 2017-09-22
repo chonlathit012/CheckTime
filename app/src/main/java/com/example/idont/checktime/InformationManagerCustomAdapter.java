@@ -7,9 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -37,6 +41,7 @@ public class InformationManagerCustomAdapter extends BaseAdapter {
         ImageView profile_photo;
         TextView display_name;
         TextView time;
+        ProgressBar progressBar;
     }
 
     @Override
@@ -85,6 +90,7 @@ public class InformationManagerCustomAdapter extends BaseAdapter {
             viewHolder.profile_photo = (ImageView) convertView.findViewById(R.id.profile_photo);
             viewHolder.display_name = (TextView) convertView.findViewById(R.id.display_name);
             viewHolder.time = (TextView) convertView.findViewById(R.id.time);
+            viewHolder.progressBar = (ProgressBar) convertView.findViewById(R.id.progress);
 
             convertView.setTag(viewHolder);
         } else {
@@ -98,7 +104,22 @@ public class InformationManagerCustomAdapter extends BaseAdapter {
         if (photo_url != null) {
             Glide.with(context)
                     .load(photo_url)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                            return false; // important to return false so the error placeholder can be placed
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            viewHolder.progressBar.setVisibility(View.GONE);
+                            return false;
+                        }
+                    })
                     .into(viewHolder.profile_photo);
+        } else {
+            viewHolder.progressBar.setVisibility(View.GONE);
         }
 
         return convertView;

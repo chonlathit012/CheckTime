@@ -77,7 +77,7 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
         myCalendar.setWeekDayLayoutBackgroundColor("#ddd9d9");
         myCalendar.setWeekDayLayoutTextColor("#000000");
 
-        myCalendar.isSaturdayOff(false, "#ffffff", "#ff0000");
+        myCalendar.isSaturdayOff(false, "#ffffff", "#e83e3e");
         myCalendar.isSundayOff(true, "#ffffff", "#f40404"); // sunday background and text color
 
         myCalendar.setExtraDatesOfMonthBackgroundColor("#ffffff");

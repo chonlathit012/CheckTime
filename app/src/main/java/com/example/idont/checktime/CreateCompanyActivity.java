@@ -6,6 +6,7 @@ import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.Location;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
@@ -72,6 +73,9 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
     int hour, minute;
     Uri selectedImage;
     Bitmap bitmap = null;
+
+    double lat = 0.0;
+    double lng = 0.0;
 
     String uid = null;
     String json = "";
@@ -241,6 +245,9 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
         createCompanyData.setStart_time(buttonStartTime.getText().toString());
         createCompanyData.setFinish_time(buttonFinishTime.getText().toString());
         createCompanyData.setLogo_url(logo_url);
+        createCompanyData.setLat(lat);
+        createCompanyData.setLng(lng);
+
 
         CreateCompanySend createCompanySend = new CreateCompanySend();
         createCompanySend.setTarget("create_company");
@@ -301,6 +308,13 @@ public class CreateCompanyActivity extends AppCompatActivity implements Test {
             String company_name = editTextCompanyName.getText().toString();
             String start_time = buttonStartTime.getText().toString();
             String finish_time = buttonFinishTime.getText().toString();
+
+            GpsTracker gpsTracker = new GpsTracker(CreateCompanyActivity.this);
+            Location location = gpsTracker.getLocation();
+            if (location != null) {
+                lat = location.getLatitude();
+                lng = location.getLongitude();
+            }
 
             if (company_name.isEmpty() || start_time.equals("Select Time") || finish_time.equals("Select Time")) {
                 Toast.makeText(this, "Please enter data.", Toast.LENGTH_SHORT).show();

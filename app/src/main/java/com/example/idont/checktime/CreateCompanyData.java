@@ -10,6 +10,8 @@ public class CreateCompanyData {
     String start_time;
     String finish_time;
     String logo_url;
+    double lat;
+    double lng;
 
     public String getId() {
         return id;
@@ -49,5 +51,21 @@ public class CreateCompanyData {
 
     public void setLogo_url(String logo_url) {
         this.logo_url = logo_url;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public void setLng(double lng) {
+        this.lng = lng;
     }
 }
