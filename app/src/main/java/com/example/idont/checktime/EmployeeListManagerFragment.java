@@ -22,6 +22,8 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
@@ -147,8 +149,10 @@ public class EmployeeListManagerFragment extends Fragment implements Test {
         List<EmployeeListManagerDataReceive> listManagerDataReceives = employeeListManagerRecive.getData().getEmployee_list();
 
         progressBar.setVisibility(View.GONE);
-        employeeListManagerCustomAdapter = new EmployeeListManagerCustomAdapter(getActivity(), listManagerDataReceives);
-        listView.setAdapter(employeeListManagerCustomAdapter);
+        if (getActivity() != null) {
+            employeeListManagerCustomAdapter = new EmployeeListManagerCustomAdapter(getActivity(), listManagerDataReceives);
+            listView.setAdapter(employeeListManagerCustomAdapter);
+        }
 
     }
 

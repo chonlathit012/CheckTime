@@ -309,7 +309,7 @@ public class SettingEmployeeFragment extends Fragment implements Test {
             yearUser = Integer.parseInt(bi);
         }
 
-        if (photo_url != null) {
+        if (photo_url != null && getActivity() != null) {
             Glide.with(getActivity())
                     .load(photo_url)
                     .listener(new RequestListener<String, GlideDrawable>() {
@@ -327,7 +327,7 @@ public class SettingEmployeeFragment extends Fragment implements Test {
                     })
                     .load(photo_url)
                     .into(imageView);
-        } else{
+        } else {
             progressBar.setVisibility(View.GONE);
         }
 

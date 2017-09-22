@@ -95,13 +95,13 @@ public class InformaitionManagerFragment extends Fragment implements Test {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 getEmployeeCount();
                 Gson gson = new Gson();
-                InformationReceive informationReceive = gson.fromJson(jsonReceive,InformationReceive.class);
+                InformationReceive informationReceive = gson.fromJson(jsonReceive, InformationReceive.class);
                 List<InformationListDataReceive> listDataReceives = informationReceive.getData().getEmployee_list_late();
 
                 employee_id = listDataReceives.get(position).getId();
 
-                Intent intent = new Intent(getActivity(),EmployeeProfileActivity.class);
-                intent.putExtra("employee_id",employee_id);
+                Intent intent = new Intent(getActivity(), EmployeeProfileActivity.class);
+                intent.putExtra("employee_id", employee_id);
                 startActivity(intent);
             }
         });
@@ -109,7 +109,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
 
     public void showEmployeeCount() {
         Gson gson = new Gson();
-        InformationReceive informationReceive = gson.fromJson(jsonReceive,InformationReceive.class);
+        InformationReceive informationReceive = gson.fromJson(jsonReceive, InformationReceive.class);
         List<InformationListDataReceive> listDataReceives = informationReceive.getData().getEmployee_list_late();
 
         String day_count = informationReceive.getData().getEmployee_day_count();
@@ -140,8 +140,10 @@ public class InformaitionManagerFragment extends Fragment implements Test {
             pieView.showPercentLabel(true);
             pieView.setDate(pieHelperArrayList);
 
-            informationManagerCustomAdapter = new InformationManagerCustomAdapter(getActivity(),listDataReceives);
-            listView.setAdapter(informationManagerCustomAdapter);
+            if (getActivity() != null) {
+                informationManagerCustomAdapter = new InformationManagerCustomAdapter(getActivity(), listDataReceives);
+                listView.setAdapter(informationManagerCustomAdapter);
+            }
         } else {
             textViewNoData.setText("No data");
         }
@@ -190,7 +192,7 @@ public class InformaitionManagerFragment extends Fragment implements Test {
         ArrayList<Integer> intList = new ArrayList<Integer>();
 
         totalem = 90;
-        late = (int) (Math.random() * 30) +3;
+        late = (int) (Math.random() * 30) + 3;
         intList.add(0, totalem - late);
         intList.add(1, late);
 

@@ -152,7 +152,7 @@ public class UserProfileFragment extends Fragment implements Test {
             yearUser = Integer.parseInt(bi);
         }
 
-        if (photo_url != null) {
+        if (photo_url != null && getActivity() != null) {
             Glide.with(getActivity())
                     .load(photo_url)
                     .into(imageView);

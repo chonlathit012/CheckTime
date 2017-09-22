@@ -27,6 +27,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
@@ -71,11 +72,14 @@ public class SettingManagerFragment extends Fragment implements Test {
     ProgressDialog progressDialog;
     ProgressBar progressBar;
 
+//    RequestManager mRequestManager;
+
     String json = "";
     String jsonReceive = "";
     String uid;
     String company_id;
     String logo_url = "1";
+    String logo_url2;
 
     public static SettingManagerFragment newInstance() {
         SettingManagerFragment fragment = new SettingManagerFragment();
@@ -85,6 +89,7 @@ public class SettingManagerFragment extends Fragment implements Test {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+//        RequestManager mRequestManager= Glide.with(this);
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_setting_manager, container, false);
     }
@@ -295,11 +300,11 @@ public class SettingManagerFragment extends Fragment implements Test {
         String company_name = settingManagerReceive.getData().getCompany_name();
         String start_time = settingManagerReceive.getData().getStart_time();
         String finish_time = settingManagerReceive.getData().getFinish_time();
-        String logo_url = settingManagerReceive.getData().getLogo_url();
+        logo_url2 = settingManagerReceive.getData().getLogo_url();
 
-        if (logo_url != null) {
+        if (logo_url2 != null && getActivity() != null) {
             Glide.with(getActivity())
-                    .load(logo_url)
+                    .load(logo_url2)
                     .error(R.drawable.alert)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
@@ -415,4 +420,30 @@ public class SettingManagerFragment extends Fragment implements Test {
         }
     }
 
+//    @Override
+//    public void onDestroy() {
+//        super.onDestroy();
+//        Runnable r = new Runnable(){
+//            @Override
+//            public void run() {
+//                mRequestManager
+//                        .load(logo_url2)
+//                        .error(R.drawable.alert)
+//                        .listener(new RequestListener<String, GlideDrawable>() {
+//                            @Override
+//                            public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+//                                progressBar.setVisibility(View.GONE);
+//                                return false; // important to return false so the error placeholder can be placed
+//                            }
+//
+//                            @Override
+//                            public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+//                                progressBar.setVisibility(View.GONE);
+//                                return false;
+//                            }
+//                        })
+//                        .into(imageView);
+//            }
+//        };
+//    }
 }
