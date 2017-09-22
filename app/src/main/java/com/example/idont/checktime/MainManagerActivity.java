@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -29,6 +30,9 @@ public class MainManagerActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_manager);
+
+        ActivityCompat.requestPermissions(MainManagerActivity.this, new String[]{
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);

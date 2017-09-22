@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,9 @@ public class MainUserActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_user);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle("Profile");
+
+        ActivityCompat.requestPermissions(MainUserActivity.this, new String[]{
+                android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 123);
 
         coordinatorLayout = (CoordinatorLayout) findViewById(R.id
                 .coordinatorLayout);
