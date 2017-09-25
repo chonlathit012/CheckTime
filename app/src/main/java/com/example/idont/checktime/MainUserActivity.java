@@ -43,14 +43,14 @@ public class MainUserActivity extends AppCompatActivity {
             int editUser = bundle.getInt("User profile updated.");
             int createCompany = bundle.getInt("Created data success");
 
-            if (editUser == 1){
+            if (editUser == 1) {
                 Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout,"User profile updated.", Snackbar.LENGTH_LONG);
+                        .make(coordinatorLayout, "User profile updated.", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
-            if (createCompany == 1){
+            if (createCompany == 1) {
                 Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout,"Created data success.", Snackbar.LENGTH_LONG);
+                        .make(coordinatorLayout, "Created data success.", Snackbar.LENGTH_LONG);
                 snackbar.show();
             }
         }
@@ -127,7 +127,8 @@ public class MainUserActivity extends AppCompatActivity {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        MainUserActivity.super.onBackPressed();
+                        finishAffinity();
+                        System.exit(0);
                     }
                 }).create().show();
     }

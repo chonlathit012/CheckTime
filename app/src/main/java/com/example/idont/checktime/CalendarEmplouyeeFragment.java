@@ -104,51 +104,55 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
 
                 Gson gson = new Gson();
                 CalendarReceive calendarReceive = gson.fromJson(jsonReceive, CalendarReceive.class);
-                List<CalendarDataReceive> listReceiveList = calendarReceive.getData().getTime_list();
+                String Notime = calendarReceive.getMessage();
 
-                for (int i = 0; i < listReceiveList.size(); i++) {
-                    String start_time = listReceiveList.get(i).getStart_time();
-                    String finish_time = listReceiveList.get(i).getFinish_time();
-                    SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    SimpleDateFormat formatDateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    Date dateNewStart;
-                    Date dateNewFinish;
-                    String newDate;
-                    String dateLocal;
-                    String startTime = "";
-                    String finishTime = "";
-                    try {
-                        dateNewStart = formatDateStart.parse(start_time);
-                        SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
-                        SimpleDateFormat formaterTime = new SimpleDateFormat("HH:mm:ss");
-                        newDate = formater.format(dateNewStart);
-                        dateLocal = formater.format(date);
-                        startTime = formaterTime.format(dateNewStart);
-                        if (finish_time != null) {
-                            dateNewFinish = formatDateFinish.parse(finish_time);
-                            finishTime = formaterTime.format(dateNewFinish);
+                if (!Notime.equals("No time_list.")) {
 
-                            if (dateLocal.equals(newDate)) {
-                                builder.setMessage(("Date : " + newDate) +
-                                        "\nStart time : " + startTime +
-                                        "\nFinish time : " + finishTime);
-                                builder.setPositiveButton("Done", null);
-                                builder.show();
+                    List<CalendarDataReceive> listReceiveList = calendarReceive.getData().getTime_list();
+
+                    for (int i = 0; i < listReceiveList.size(); i++) {
+                        String start_time = listReceiveList.get(i).getStart_time();
+                        String finish_time = listReceiveList.get(i).getFinish_time();
+                        SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        SimpleDateFormat formatDateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        Date dateNewStart;
+                        Date dateNewFinish;
+                        String newDate;
+                        String dateLocal;
+                        String startTime = "";
+                        String finishTime = "";
+                        try {
+                            dateNewStart = formatDateStart.parse(start_time);
+                            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+                            SimpleDateFormat formaterTime = new SimpleDateFormat("HH:mm:ss");
+                            newDate = formater.format(dateNewStart);
+                            dateLocal = formater.format(date);
+                            startTime = formaterTime.format(dateNewStart);
+                            if (finish_time != null) {
+                                dateNewFinish = formatDateFinish.parse(finish_time);
+                                finishTime = formaterTime.format(dateNewFinish);
+
+                                if (dateLocal.equals(newDate)) {
+                                    builder.setMessage(("Date : " + newDate) +
+                                            "\nStart time : " + startTime +
+                                            "\nFinish time : " + finishTime);
+                                    builder.setPositiveButton("Done", null);
+                                    builder.show();
+                                }
+                            } else {
+                                if (dateLocal.equals(newDate)) {
+                                    builder.setMessage(("Date : " + newDate) +
+                                            "\nStart time : " + startTime +
+                                            "\nFinish time : - ");
+                                    builder.setPositiveButton("Done", null);
+                                    builder.show();
+                                }
                             }
-                        } else {
-                            if (dateLocal.equals(newDate)) {
-                                builder.setMessage(("Date : " + newDate) +
-                                        "\nStart time : " + startTime +
-                                        "\nFinish time : - ");
-                                builder.setPositiveButton("Done", null);
-                                builder.show();
-                            }
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
                     }
                 }
-
 
             }
 
@@ -263,6 +267,7 @@ public class CalendarEmplouyeeFragment extends Fragment implements Test {
                 case "Get time_list success.":
                     showTimeList();
                     break;
+
             }
         }
 

@@ -177,7 +177,8 @@ public class MainEmployeeActivity extends AppCompatActivity implements Test {
                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
                     public void onClick(DialogInterface arg0, int arg1) {
-                        MainEmployeeActivity.super.onBackPressed();
+                        finishAffinity();
+                        System.exit(0);
                     }
                 }).create().show();
     }

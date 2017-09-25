@@ -51,6 +51,9 @@ public class ChartEmployeeFragment extends Fragment implements Test {
     TextView textView07;
     TextView textView08;
     TextView textView10;
+    TextView textViewDay;
+    TextView textViewTime;
+
 
     FirebaseAuth firebaseAuth;
     FirebaseUser firebaseUser;
@@ -90,6 +93,8 @@ public class ChartEmployeeFragment extends Fragment implements Test {
         textView07 = (TextView) view.findViewById(R.id.textView0700);
         textView08 = (TextView) view.findViewById(R.id.textView0830);
         textView10 = (TextView) view.findViewById(R.id.textView1030);
+        textViewTime = (TextView) view.findViewById(R.id.texttime);
+        textViewDay = (TextView) view.findViewById(R.id.textday);
 
         getTimeList();
 
@@ -122,6 +127,8 @@ public class ChartEmployeeFragment extends Fragment implements Test {
         textView08.setText(companyHour + ":" + companyMinute);
         textView07.setText(String.valueOf(Integer.parseInt(companyHour) - 1) + ":30");
         textView10.setText(String.valueOf(Integer.parseInt(companyHour) + 2) + ":30");
+        textViewTime.setText("Time");
+        textViewDay.setText("Day");
         viewLine.setBackgroundColor(Color.LTGRAY);
 
         ArrayList<Integer> barDataList = new ArrayList<Integer>();
@@ -149,7 +156,6 @@ public class ChartEmployeeFragment extends Fragment implements Test {
 
             int hour = Integer.parseInt(newHour);
             int hourCompany = Integer.parseInt(companyHour) - 1;
-
 
             if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) - 1))) {
                 barDataList.add(i, 30 + Integer.parseInt(newMinute));

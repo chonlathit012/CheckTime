@@ -70,6 +70,8 @@ public class CalendarActivity extends AppCompatActivity implements Test {
         myCalendar.setDatesOfMonthBackgroundColor("#ffffff");
         myCalendar.setDatesOfMonthTextColor("#000000");
 
+        myCalendar.setCalendarDate(22, 9, 2017);
+
         myCalendar.setCurrentDateBackgroundColor("#ed1547");
         myCalendar.setCurrentDateTextColor("#ffffff");
 
@@ -88,53 +90,57 @@ public class CalendarActivity extends AppCompatActivity implements Test {
 
                 Gson gson = new Gson();
                 CalendarReceive calendarReceive = gson.fromJson(jsonReceive, CalendarReceive.class);
+                String Notime = calendarReceive.getMessage();
 
-                message = calendarReceive.getMessage();
+                if (!Notime.equals("No time_list.")) {
 
-                if (!message.equals("No time_list.")) {
+                    message = calendarReceive.getMessage();
 
-                    List<CalendarDataReceive> listReceiveList = calendarReceive.getData().getTime_list();
+                    if (!message.equals("No time_list.")) {
 
-                    for (int i = 0; i < listReceiveList.size(); i++) {
-                        String start_time = listReceiveList.get(i).getStart_time();
-                        String finish_time = listReceiveList.get(i).getFinish_time();
-                        SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        SimpleDateFormat formatDateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        Date dateNewStart;
-                        Date dateNewFinish;
-                        String newDate;
-                        String dateLocal;
-                        String startTime = "";
-                        String finishTime = "";
-                        try {
-                            dateNewStart = formatDateStart.parse(start_time);
-                            SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
-                            SimpleDateFormat formaterTime = new SimpleDateFormat("HH:mm:ss");
-                            newDate = formater.format(dateNewStart);
-                            dateLocal = formater.format(date);
-                            startTime = formaterTime.format(dateNewStart);
-                            if (finish_time != null) {
-                                dateNewFinish = formatDateFinish.parse(finish_time);
-                                finishTime = formaterTime.format(dateNewFinish);
+                        List<CalendarDataReceive> listReceiveList = calendarReceive.getData().getTime_list();
 
-                                if (dateLocal.equals(newDate)) {
-                                    builder.setMessage(("Date : " + newDate) +
-                                            "\nStart time : " + startTime +
-                                            "\nFinish time : " + finishTime);
-                                    builder.setPositiveButton("Done", null);
-                                    builder.show();
+                        for (int i = 0; i < listReceiveList.size(); i++) {
+                            String start_time = listReceiveList.get(i).getStart_time();
+                            String finish_time = listReceiveList.get(i).getFinish_time();
+                            SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            SimpleDateFormat formatDateFinish = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            Date dateNewStart;
+                            Date dateNewFinish;
+                            String newDate;
+                            String dateLocal;
+                            String startTime = "";
+                            String finishTime = "";
+                            try {
+                                dateNewStart = formatDateStart.parse(start_time);
+                                SimpleDateFormat formater = new SimpleDateFormat("dd/MM/yyyy");
+                                SimpleDateFormat formaterTime = new SimpleDateFormat("HH:mm:ss");
+                                newDate = formater.format(dateNewStart);
+                                dateLocal = formater.format(date);
+                                startTime = formaterTime.format(dateNewStart);
+                                if (finish_time != null) {
+                                    dateNewFinish = formatDateFinish.parse(finish_time);
+                                    finishTime = formaterTime.format(dateNewFinish);
+
+                                    if (dateLocal.equals(newDate)) {
+                                        builder.setMessage(("Date : " + newDate) +
+                                                "\nStart time : " + startTime +
+                                                "\nFinish time : " + finishTime);
+                                        builder.setPositiveButton("Done", null);
+                                        builder.show();
+                                    }
+                                } else {
+                                    if (dateLocal.equals(newDate)) {
+                                        builder.setMessage(("Date : " + newDate) +
+                                                "\nStart time : " + startTime +
+                                                "\nFinish time : - ");
+                                        builder.setPositiveButton("Done", null);
+                                        builder.show();
+                                    }
                                 }
-                            } else {
-                                if (dateLocal.equals(newDate)) {
-                                    builder.setMessage(("Date : " + newDate) +
-                                            "\nStart time : " + startTime +
-                                            "\nFinish time : - ");
-                                    builder.setPositiveButton("Done", null);
-                                    builder.show();
-                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
                             }
-                        } catch (ParseException e) {
-                            e.printStackTrace();
                         }
                     }
                 }
@@ -238,4 +244,5 @@ public class CalendarActivity extends AppCompatActivity implements Test {
             }
         }
     }
+
 }

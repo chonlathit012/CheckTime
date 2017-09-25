@@ -63,6 +63,8 @@ public class RegisterActivity extends AppCompatActivity implements Test {
     String json = "";
     String jsonReceive = "";
 
+    int test = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -141,7 +143,7 @@ public class RegisterActivity extends AppCompatActivity implements Test {
                 String phoneNumber = editTextPhoneNumber.getText().toString().trim();
 
                 if (!rePassword.isEmpty() && !firstName.isEmpty() && !lastName.isEmpty() && !phoneNumber.isEmpty()
-                        && phoneNumber.length() > 9) {
+                        && phoneNumber.length() > 9 && test == 0) {
                     if (!buttonDate.getText().toString().equals("Select Date")) {
                         regisUser();
                     } else {
@@ -278,9 +280,11 @@ public class RegisterActivity extends AppCompatActivity implements Test {
         if (email.isEmpty() || !isValidEmail(email)) {
             textInputLayoutEmail.setError(getString(R.string.err_msg_email));
             requestFocus(editTextEmail);
+            test = 1;
             return false;
         } else {
             textInputLayoutEmail.setErrorEnabled(false);
+            test = 0;
         }
 
         return true;
