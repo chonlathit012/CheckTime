@@ -62,7 +62,8 @@ public class CheckTimeEmployeeFragment extends Fragment implements Test {
     String message;
     String start_time;
     String finish_time;
-    String wifi = "58:8d:09:e2:a5:81";
+//    String wifi = "58:8d:09:e2:a5:81";
+    String wifi = "aa:5b:78:6f:49:a2";
     String checkWifi;
     String stringDate;
 

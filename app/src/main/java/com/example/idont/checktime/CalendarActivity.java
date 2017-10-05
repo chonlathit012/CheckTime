@@ -70,7 +70,7 @@ public class CalendarActivity extends AppCompatActivity implements Test {
         myCalendar.setDatesOfMonthBackgroundColor("#ffffff");
         myCalendar.setDatesOfMonthTextColor("#000000");
 
-        myCalendar.setCalendarDate(22, 9, 2017);
+//        myCalendar.setCalendarDate(22, 9, 2017);
 
         myCalendar.setCurrentDateBackgroundColor("#ed1547");
         myCalendar.setCurrentDateTextColor("#ffffff");

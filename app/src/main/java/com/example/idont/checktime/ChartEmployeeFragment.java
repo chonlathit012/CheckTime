@@ -106,84 +106,92 @@ public class ChartEmployeeFragment extends Fragment implements Test {
         List<CalendarDataReceive> listReceiveList = calendarReceive.getData().getTime_list();
         String company_start_time = calendarReceive.getData().getCompany_start_time();
 
-        SimpleDateFormat formatCompanyTime = new SimpleDateFormat("HH:mm");
-        Date companyTime;
-        String companyHour = null;
-        String companyMinute = null;
-        SimpleDateFormat formaterHourCom = null;
-        SimpleDateFormat formaterMinuteCom = null;
-        try {
-            companyTime = formatCompanyTime.parse(company_start_time);
-            formaterHourCom = new SimpleDateFormat("HH");
-            formaterMinuteCom = new SimpleDateFormat("mm");
+        if (listReceiveList.size() != 0) {
 
-            companyHour = formaterHourCom.format(companyTime);
-            companyMinute = formaterMinuteCom.format(companyTime);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        textView08.setText(companyHour + ":" + companyMinute);
-        textView07.setText(String.valueOf(Integer.parseInt(companyHour) - 1) + ":30");
-        textView10.setText(String.valueOf(Integer.parseInt(companyHour) + 2) + ":30");
-        textViewTime.setText("Time");
-        textViewDay.setText("Day");
-        viewLine.setBackgroundColor(Color.LTGRAY);
-
-        ArrayList<Integer> barDataList = new ArrayList<Integer>();
-        ArrayList<String> dayNumbar = new ArrayList<String>();
-        for (int i = 0; i < listReceiveList.size(); i++) {
-            String start_time = listReceiveList.get(i).getStart_time();
-            SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date dateNewStart;
-            String newDate = null;
-            String newHour = null;
-            String newMinute = null;
+            SimpleDateFormat formatCompanyTime = new SimpleDateFormat("HH:mm");
+            Date companyTime;
+            String companyHour = null;
+            String companyMinute = null;
+            SimpleDateFormat formaterHourCom = null;
+            SimpleDateFormat formaterMinuteCom = null;
             try {
-                dateNewStart = formatDateStart.parse(start_time);
-                SimpleDateFormat formater = new SimpleDateFormat("dd");
-                SimpleDateFormat formaterHour = new SimpleDateFormat("HH");
-                SimpleDateFormat formaterMinute = new SimpleDateFormat("mm");
+                companyTime = formatCompanyTime.parse(company_start_time);
+                formaterHourCom = new SimpleDateFormat("HH");
+                formaterMinuteCom = new SimpleDateFormat("mm");
 
-                newDate = formater.format(dateNewStart);
-                newHour = formaterHour.format(dateNewStart);
-                newMinute = formaterMinute.format(dateNewStart);
+                companyHour = formaterHourCom.format(companyTime);
+                companyMinute = formaterMinuteCom.format(companyTime);
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
-            int hour = Integer.parseInt(newHour);
-            int hourCompany = Integer.parseInt(companyHour) - 1;
+            textView08.setText(companyHour + ":" + companyMinute);
+            textView07.setText(String.valueOf(Integer.parseInt(companyHour) - 1) + ":30");
+            textView10.setText(String.valueOf(Integer.parseInt(companyHour) + 2) + ":30");
+            textViewTime.setText("Time");
+            textViewDay.setText("Day");
+            viewLine.setBackgroundColor(Color.LTGRAY);
 
-            if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) - 1))) {
-                barDataList.add(i, 30 + Integer.parseInt(newMinute));
+            ArrayList<Integer> barDataList = new ArrayList<Integer>();
+            ArrayList<String> dayNumbar = new ArrayList<String>();
+            for (int i = 0; i < listReceiveList.size(); i++) {
+                String start_time = listReceiveList.get(i).getStart_time();
+                SimpleDateFormat formatDateStart = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                Date dateNewStart;
+                String newDate = null;
+                String newHour = null;
+                String newMinute = null;
+                try {
+                    dateNewStart = formatDateStart.parse(start_time);
+                    SimpleDateFormat formater = new SimpleDateFormat("dd");
+                    SimpleDateFormat formaterHour = new SimpleDateFormat("HH");
+                    SimpleDateFormat formaterMinute = new SimpleDateFormat("mm");
 
-            } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour)))) {
-                barDataList.add(i, 90 + Integer.parseInt(newMinute));
+                    newDate = formater.format(dateNewStart);
+                    newHour = formaterHour.format(dateNewStart);
+                    newMinute = formaterMinute.format(dateNewStart);
 
-            } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) + 1))) {
-                barDataList.add(i, 150 + Integer.parseInt(newMinute));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-            } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) + 2))) {
-                barDataList.add(i, 210 + Integer.parseInt(newMinute));
+                int hour = Integer.parseInt(newHour);
+                int hourCompany = Integer.parseInt(companyHour) - 1;
 
-            } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) - 2))) {
-                barDataList.add(i, Integer.parseInt(newMinute));
+                if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) - 1))) {
+                    barDataList.add(i, 30 + Integer.parseInt(newMinute));
 
-            } else if (hour < hourCompany) {
-                barDataList.add(i, 0);
-            } else {
-                barDataList.add(i, 250);
+                } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour)))) {
+                    barDataList.add(i, 90 + Integer.parseInt(newMinute));
+
+                } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) + 1))) {
+                    barDataList.add(i, 150 + Integer.parseInt(newMinute));
+
+                } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) + 2))) {
+                    barDataList.add(i, 210 + Integer.parseInt(newMinute));
+
+                } else if (String.valueOf(hour).equals(String.valueOf(Integer.parseInt(companyHour) - 2))) {
+                    barDataList.add(i, Integer.parseInt(newMinute));
+
+                } else if (hour < hourCompany) {
+                    barDataList.add(i, 0);
+                } else {
+                    barDataList.add(i, 250);
+                }
+
+                dayNumbar.add(String.valueOf(newDate));
+
             }
 
-            dayNumbar.add(String.valueOf(newDate));
-
+            progressBar.setVisibility(View.GONE);
+            barView.setBottomTextList(dayNumbar);
+            barView.setDataList(barDataList, 250);
+        } else {
+            imageView.setImageResource(R.drawable.no_icon);
+            progressBar.setVisibility(View.GONE);
         }
-        progressBar.setVisibility(View.GONE);
-        barView.setBottomTextList(dayNumbar);
-        barView.setDataList(barDataList, 250);
     }
 
     public void getTimeList() {
